@@ -1,0 +1,76 @@
+cmake_minimum_required(VERSION 3.16)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/scc/cmake)
+
+include(Conan)
+
+project(tgfs_vp LANGUAGES C CXX VERSION 0.0.1)
+
+option(ENABLE_SCV "Enable the use of SCV" ON)
+option(EN_EXT_DEBUG "Enable extended debug output at runtime" OFF)
+option(ENABLE_COVERAGE "Enable code coverage" OFF)
+option(ENABLE_SANITIZER "Enable address sanitizer" OFF)
+option(ENABLE_CLANGTIDY "Enable static analysis with clang-tidy." OFF)
+
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+include(CheckCXXCompilerFlag)
+include(GNUInstallDirs)
+
+# add address sanitizer
+if(ENABLE_SANITIZER)
+  set(CMAKE_C_FLAGS             "${CMAKE_C_FLAGS} -fsanitize=address")
+  set(CMAKE_CXX_FLAGS           "${CMAKE_CXX_FLAGS} -fsanitize=address")
+  set(CMAKE_EXE_LINKER_FLAGS    "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address")
+  set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fsanitize=address")
+endif()
+
+setup_conan(TARGETS)
+
+set(Boost_NO_BOOST_CMAKE ON) #  Don't do a find_package in config mode before searching for a regular boost install.
+#set(Boost_NO_SYSTEM_PATHS ON)
+#set(Boost_USE_STATIC_LIBS OFF)
+#set(Boost_USE_MULTITHREADED ON)
+#set(Boost_USE_STATIC_RUNTIME OFF)
+
+
+find_package(Boost REQUIRED COMPONENTS program_options)
+find_package(OSCISystemC REQUIRED)
+set(CLANG_FORMAT_EXCLUDE_PATTERNS "scc")
+find_package(ClangFormat)
+
+if(ENABLE_COVERAGE)
+    include(CodeCoverage)
+    append_coverage_compiler_flags()
+    set(COVERAGE_EXCLUDES "${tgfs_verif_SOURCE_DIR}/scc/*" "${tgfs_verif_SOURCE_DIR}/build/*" "$ENV{HOME}/.conan/*" "/opt/*")
+endif()
+
+if(ENABLE_CLANGTIDY)
+    find_program(CLANG_TIDY_EXE NAMES "clang-tidy")
+    if (CLANG_TIDY_EXE)
+      	message(STATUS "clang-tidy found: ${CLANG_TIDY_EXE}")
+        set(CLANG_TIDY_CHECKS 
+        "-*,modernize-*,-modernize-use-trailing-return-type,clang-analyzer-*,concurrency-*,cppcoreguidelines-*,boost-*,bugprone-*,performance-*,portability-*,readability-*")
+        #set(CLANG_TIDY_CHECKS "*")
+        set(CMAKE_CXX_CLANG_TIDY 
+                ${CLANG_TIDY_EXE};
+                -header-filter=${tgfs_verif_SOURCE_DIR};
+                -checks=${CLANG_TIDY_CHECKS};)
+    else()
+      	message(AUTHOR_WARNING "clang-tidy not found!")
+      	set(CMAKE_CXX_CLANG_TIDY "" CACHE STRING "" FORCE) # delete it
+    endif()
+endif ()
+
+add_subdirectory(scc)
+add_subdirectory(tgfs-iss/dbt-core)
+add_subdirectory(tgfs-iss/tgfs)
+add_subdirectory(vpvper)
+#add_subdirectory(src)
+
+# CTest is a testing tool that can be used to test your project.
+# enable_testing()
+# add_test(NAME example
+#          WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+#          COMMAND example)

@@ -1,0 +1,15 @@
+[submodule "VPVPer"]
+	path = VPVPer
+	url = https://github.com/VP-Vibes/VPVPer.git
+[submodule "tgfs-iss/dbt-core"]
+	path = tgfs-iss/dbt-core
+	url = https://git.minres.com/DBT-RISE/DBT-RISE-Core.git
+[submodule "tgfs-iss/tgfs"]
+	path = tgfs-iss/tgfs
+	url = https://git.minres.com/DBT-RISE/DBT-RISE-TGFS.git
+[submodule "scc"]
+	path = scc
+	url = https://github.com/VP-Vibes/SystemC-Components.git
+[submodule "vpvper"]
+	path = vpvper
+	url = https://github.com/VP-Vibes/VPV-Peripherals.git
