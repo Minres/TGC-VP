@@ -3,7 +3,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/scc/cmake
 
 include(Conan)
 
-project(tgfs_vp LANGUAGES C CXX VERSION 0.0.1)
+project(tgfs-platform LANGUAGES C CXX VERSION 0.0.1)
 
 option(ENABLE_SCV "Enable the use of SCV" ON)
 option(EN_EXT_DEBUG "Enable extended debug output at runtime" OFF)
@@ -64,10 +64,14 @@ if(ENABLE_CLANGTIDY)
 endif ()
 
 add_subdirectory(scc)
-add_subdirectory(tgfs-iss/dbt-core)
-add_subdirectory(tgfs-iss/tgfs)
+add_subdirectory(tgc-iss/dbt-rise-core)
+add_subdirectory(tgc-iss/dbt-rise-tgc)
 add_subdirectory(vpvper)
-#add_subdirectory(src)
+add_subdirectory(src)
+add_custom_target(fw-hello-world ALL COMMAND make -C fw/hello-world
+                   USES_TERMINAL WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+add_custom_target(fw-fir ALL COMMAND make -C fw/fir
+                   USES_TERMINAL WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
 # CTest is a testing tool that can be used to test your project.
 # enable_testing()

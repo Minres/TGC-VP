@@ -41,6 +41,9 @@
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
 			<storageModule buildDir="build/${ConfigName}" moduleId="de.marw.cdt.cmake.core.settings">
 				<options/>
+				<defs>
+					<def name="CMAKE_BUILD_TYPE" type="STRING" val="${ConfigName}"/>
+				</defs>
 			</storageModule>
 		</cconfiguration>
 	</storageModule>
@@ -55,7 +58,6 @@
 		<configuration configurationName="Debug"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
-	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.toolchain.gnu.base.1730410661;cdt.managedbuild.toolchain.gnu.base.1730410661.218663890;cdt.managedbuild.tool.gnu.c.compiler.base.415892287;cdt.managedbuild.tool.gnu.c.compiler.input.1806041557">
@@ -64,5 +66,17 @@
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.toolchain.gnu.base.1730410661;cdt.managedbuild.toolchain.gnu.base.1730410661.218663890;cdt.managedbuild.tool.gnu.cpp.compiler.base.1878089590;cdt.managedbuild.tool.gnu.cpp.compiler.input.705150349">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets">
+		<buildTargets>
+			<target name="fw-hello-world" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+				<buildCommand>CMAKE_BUILD_TOOL</buildCommand>
+				<buildArguments/>
+				<buildTarget>fw-hello-world</buildTarget>
+				<stopOnError>true</stopOnError>
+				<useDefaultCommand>true</useDefaultCommand>
+				<runAllBuilders>true</runAllBuilders>
+			</target>
+		</buildTargets>
 	</storageModule>
 </cproject>
