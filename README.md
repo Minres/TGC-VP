@@ -8,7 +8,7 @@ provides a comprehensive and consistent solution to develop processor cores.
 
 ## Quick start
 
-* you need to have a C++11 capable compiler, make, python, and cmake installed
+* you need to have a C++14 capable compiler, make, python, and cmake installed
 * install conan.io (see also http://docs.conan.io/en/latest/installation.html):
   ```
   pip install --user conan

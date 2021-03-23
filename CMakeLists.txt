@@ -3,7 +3,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/scc/cmake
 
 include(Conan)
 
-project(tgfs-platform LANGUAGES C CXX VERSION 0.0.1)
+project(ecosystem-vp LANGUAGES C CXX VERSION 0.0.1)
 
 option(ENABLE_SCV "Enable the use of SCV" ON)
 option(EN_EXT_DEBUG "Enable extended debug output at runtime" OFF)
