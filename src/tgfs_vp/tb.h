@@ -1,8 +1,7 @@
 /*
- * top.h
+ * Copyright (c) 2019 -2021 MINRES Technolgies GmbH
  *
- *  Created on: Mar 21, 2021
- *      Author: eyck
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 #ifndef SRC_TGFS_VP_TB_H_

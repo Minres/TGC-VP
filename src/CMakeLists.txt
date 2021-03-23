@@ -1,3 +1,8 @@
+#
+# Copyright (c) 2019 -2021 MINRES Technolgies GmbH
+#
+# SPDX-License-Identifier: Apache-2.0
+#
 cmake_minimum_required(VERSION 3.12)
 
 project(tgc-vp LANGUAGES C CXX VERSION 0.0.1)

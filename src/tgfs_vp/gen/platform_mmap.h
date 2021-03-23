@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2019 -2021 MINRES Technolgies GmbH
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #ifndef _PLATFORM_MMAP_H_
 #define _PLATFORM_MMAP_H_
 // need double braces, see
