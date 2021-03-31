@@ -23,8 +23,25 @@ typedef unsigned int        u32_t;  /* _u32 */
 /*************************** FIR related *********************************/
 #define FIR_MAX_INPUT_LEN   80
 #define FIR_MAX_OUTPUT_LEN  80
-#define FIR_ORDER 40
+#define FIR_ORDER 20
 #define FIR_LEN             (FIR_ORDER+1)  /* length = N+1  */
+#define ISAX
+#ifdef ISAX
+/// Fake ISAX for testing /////////////////////////////////////////////////////
+static        s32_t __isax_acc;
+static inline void  __isax_reset()                       { __isax_acc = 0; }
+static inline void  __isax_mac(s32_t coeff, s16_t input) { __isax_acc += coeff * input; }
+//static inline void  __isax_mac(s32_t coeff, s16_t input) {
+//    asm("mov    %[result], %[value], ror #1"
+//
+//               : [result]"=r" (y) /* Rotation result. */
+//               : [value]"r"   (x) /* Rotated value. */
+//               : /* No clobbers */
+//        );
+//}
+static inline s16_t __isax_quant()                       { return (s16_t) (__isax_acc >> 15); }
+///////////////////////////////////////////////////////////////////////////////
+#endif
 
 int FirMain_v( void );
 

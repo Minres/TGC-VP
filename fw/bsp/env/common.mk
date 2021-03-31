@@ -50,7 +50,7 @@ OBJDUMP := $(TOOL_DIR)/$(TRIPLET)-objdump
 
 $(TARGET): $(LINK_OBJS) $(LINK_DEPS)
 	$(LD) $(LINK_OBJS) $(LDFLAGS) $(LIBWRAP) -o $@
-	$(OBJDUMP) -d $(TARGET) > $(TARGET).dis
+	$(OBJDUMP) -d -S $(TARGET) > $(TARGET).dis
 	
 $(ASM_OBJS): %.o: %.S $(HEADERS)
 	$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<

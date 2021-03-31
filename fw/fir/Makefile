@@ -1,8 +1,8 @@
 
-TARGET  = main
+TARGET  = fir
 C_SRCS  = $(wildcard *.c) 
 HEADERS = $(wildcard *.h)
-CFLAGS += -O2 -g 
+CFLAGS += -O2 -g -DISAX
 
 BOARD=tgfs-vp
 LINK_TARGET=flash

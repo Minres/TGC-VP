@@ -32,10 +32,10 @@ CLIParser::CLIParser(int argc, char *argv[])
     }
     auto log_level = vm_["verbose"].as<scc::log>();
     auto log_level_num = static_cast<unsigned>(log_level);
-    auto l = logging::as_log_level(log_level_num > 6 ? 6 : log_level_num);
-    LOGGER(DEFAULT)::reporting_level() = l;
+    auto l =
+    LOGGER(DEFAULT)::reporting_level() = logging::as_log_level(log_level_num > 6 ? 6 : log_level_num);;
     LOGGER(DEFAULT)::print_time() = false;
-    LOGGER(connection)::reporting_level() = l;
+    LOGGER(connection)::reporting_level() = logging::as_log_level(log_level_num > 4 ? log_level_num-1 : log_level_num);;
     LOGGER(connection)::print_time() = false;
     ///////////////////////////////////////////////////////////////////////////
     // configure logging

@@ -85,13 +85,6 @@ s16_t FirFixed_s16(u32_t CurrIndex_u32, u32_t RingBufPos_u32)
 
 #else
 
-/// Fake ISAX for testing /////////////////////////////////////////////////////
-static        s32_t __isax_acc;
-static inline void  __isax_reset()                       { __isax_acc = 0; }
-static inline void  __isax_mac(s32_t coeff, s16_t input) { __isax_acc += coeff * input; }
-static inline s16_t __isax_quant()                       { return (s16_t) (__isax_acc >> 15); }
-///////////////////////////////////////////////////////////////////////////////
-
 s16_t FirFixed_s16(u32_t CurrIndex_u32, u32_t RingBufPos_u32)
 {
     u32_t k;                    /* filter length   index   */
