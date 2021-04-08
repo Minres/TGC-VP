@@ -10,9 +10,14 @@ RISCV_ARCH:=rv32i
 RISCV_ABI:=ilp32
 LDFLAGS := -march=$(RISCV_ARCH) -mabi=$(RISCV_ABI)
 
-compiler := $(shell which riscv32-unknown-elf-gcc)
-TOOL_DIR=$(dir $(compiler))
-
 TRIPLET=riscv32-unknown-elf
 BSP_BASE = ../bsp
-include $(BSP_BASE)/env/common.mk
+
+compiler := $(shell which $(TRIPLET)-gcc)
+TOOL_DIR=$(dir $(compiler))
+
+#include $(BSP_BASE)/env/common-gcc.mk
+
+clang := $(shell which clang)
+LLVM_TOOL_DIR=$(dir $(clang))
+include $(BSP_BASE)/env/common-clang.mk

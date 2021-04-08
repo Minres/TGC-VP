@@ -9,7 +9,6 @@
   .section      .text.entry	
   .align 2
   .weak trap_entry
-  .global trap_entry
 trap_entry:
   addi sp, sp, -32*REGBYTES
 
