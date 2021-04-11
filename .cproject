@@ -71,17 +71,26 @@
 		<buildTargets>
 			<target name="fw-hello-world" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 				<buildCommand>CMAKE_BUILD_TOOL</buildCommand>
+				<buildArguments/>
 				<buildTarget>fw-hello-world</buildTarget>
 				<stopOnError>true</stopOnError>
 				<useDefaultCommand>true</useDefaultCommand>
 				<runAllBuilders>true</runAllBuilders>
 			</target>
 			<target name="fw-fir" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
-				<buildCommand>CMAKE_BUILD_TOOL</buildCommand>
-				<buildArguments/>
-				<buildTarget>fw-fir</buildTarget>
+				<buildCommand>gmake</buildCommand>
+				<buildArguments>-C ../../fw/fir</buildArguments>
+				<buildTarget>clean all</buildTarget>
 				<stopOnError>true</stopOnError>
-				<useDefaultCommand>true</useDefaultCommand>
+				<useDefaultCommand>false</useDefaultCommand>
+				<runAllBuilders>true</runAllBuilders>
+			</target>
+			<target name="fw-fir ISAX" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+				<buildCommand>gmake</buildCommand>
+				<buildArguments>-C ../../fw/fir VARIANT=ISAX</buildArguments>
+				<buildTarget>clean all</buildTarget>
+				<stopOnError>true</stopOnError>
+				<useDefaultCommand>false</useDefaultCommand>
 				<runAllBuilders>true</runAllBuilders>
 			</target>
 		</buildTargets>

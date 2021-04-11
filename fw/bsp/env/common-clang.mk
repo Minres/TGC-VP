@@ -63,6 +63,10 @@ $(CXX_OBJS): %.o: %.cpp $(HEADERS)
 
 .PHONY: clean
 clean:
+	rm -f $(TARGET) $(LINK_OBJS)
+
+.PHONY: clean-all
+clean-all:
 	rm -f $(CLEAN_OBJS) $(LIBWRAP)
 
 endif # _SIFIVE_MK_COMMON
