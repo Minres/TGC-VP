@@ -1,24 +1,20 @@
 [requires]
     fmt/6.1.2
     zlib/1.2.11
-    boost/1.71.0
+    boost/1.75.0
     gsl-lite/0.37.0
-    SystemC/2.3.3@minres/stable
-    SystemCVerification/2.0.1@minres/stable
-    SystemC-CCI/1.0.0@minres/stable
-    elfio/3.4@minres/stable
-    tcc/0.9.27@minres/stable
+    systemc/2.3.3
+    systemc-scv/2.0.1
+    systemc-cci/1.0.0
+    elfio/3.8
+    tcc/0.9.27
     seasocks/1.4.4 
 
 [generators]
     cmake
 
 [options]
-    SystemC:stdcxx=14
-    SystemC:phase_cb=False
-    SystemCVerification:stdcxx=14
-    SystemC-CCI:stdcxx=14
-    SystemC-CCI:shared=False
+    #systemc:phase_cb=False
     fmt:header_only=True
     boost:fPIC=True
     boost:shared=False

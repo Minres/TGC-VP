@@ -11,11 +11,11 @@ provides a comprehensive and consistent solution to develop processor cores.
 * you need to have a C++14 capable compiler, make, python, and cmake installed
 * install conan.io (see also http://docs.conan.io/en/latest/installation.html):
   ```
-  pip install --user conan
+  pip3 install --user conan
   ```
 * setup conan to use the minres repo:
   ```
-  conan remote add minres https://api.bintray.com/conan/minres/conan-repo
+  conan remote add minres https://artifactory.minres.com/artifactory/api/conan/minres
   ```
 * checkout source from git
 * start an out-of-source build:
