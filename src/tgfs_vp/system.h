@@ -17,11 +17,11 @@
 #include "sysc/core_complex.h"
 #include "sifive/uart.h"
 
-#include "cci_configuration"
-#include "scc/memory.h"
-#include "scc/router.h"
-#include "scc/utilities.h"
-#include "tlm/tlm_signal_sockets.h"
+#include <cci_configuration>
+#include <scc/memory.h>
+#include <scc/router.h>
+#include <scc/utilities.h>
+#include <tlm/scc/tlm_signal_sockets.h>
 #include <array>
 #include <memory>
 #include <sysc/kernel/sc_module.h>
@@ -32,8 +32,8 @@ class system : public sc_core::sc_module {
 public:
     SC_HAS_PROCESS(system);// NOLINT
 
-    sc_core::sc_vector<tlm::tlm_signal_initiator_socket<sc_dt::sc_logic>> pins_o{"pins_o", 32};
-    sc_core::sc_vector<tlm::tlm_signal_target_socket<sc_dt::sc_logic>> pins_i{"pins_i", 32};
+    sc_core::sc_vector<tlm::scc::tlm_signal_initiator_socket<sc_dt::sc_logic>> pins_o{"pins_o", 32};
+    sc_core::sc_vector<tlm::scc::tlm_signal_target_socket<sc_dt::sc_logic>> pins_i{"pins_i", 32};
 
     sc_core::sc_in<bool> erst_n{"erst_n"};
 
@@ -64,8 +64,8 @@ private:
     sc_core::sc_vector<sc_core::sc_signal<bool, sc_core::SC_MANY_WRITERS>> global_int_s{"global_int_s", 256}, local_int_s{"local_int_s", 16};
     sc_core::sc_signal<bool, sc_core::SC_MANY_WRITERS> core_int_s{"core_int_s"};
     
-    sc_core::sc_vector<scc::tlm_signal_bool_opt_in> s_dummy_sck_i{"s_dummy_sck_i", 16};
-    sc_core::sc_vector<scc::tlm_signal_bool_opt_out> s_dummy_sck_o{"s_dummy_sck_o", 16};
+    sc_core::sc_vector<tlm::scc::tlm_signal_bool_opt_in> s_dummy_sck_i{"s_dummy_sck_i", 16};
+    sc_core::sc_vector<tlm::scc::tlm_signal_bool_opt_out> s_dummy_sck_o{"s_dummy_sck_o", 16};
 
 protected:
     void gen_reset();

@@ -17,7 +17,7 @@ class tb : public sc_core::sc_module {
 public:
     tb(sc_core::sc_module_name const& nm);
     tgfs_vp::system top{"top"};
-    sc_core::sc_vector<tlm::tlm_signal<sc_dt::sc_logic>> gpio_s{"gpio_s", 32};
+    sc_core::sc_vector<tlm::scc::tlm_signal<sc_dt::sc_logic>> gpio_s{"gpio_s", 32};
     sc_core::sc_signal<bool> rst_n{"rst_n"};
     vpvper::generic::terminal terminal{"terminal"};
 private:

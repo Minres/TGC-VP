@@ -70,8 +70,6 @@ add_subdirectory(vpvper)
 add_subdirectory(src)
 add_custom_target(fw-hello-world ALL COMMAND make -C fw/hello-world
                    USES_TERMINAL WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-add_custom_target(fw-fir ALL COMMAND make -C fw/fir
-                   USES_TERMINAL WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
 # CTest is a testing tool that can be used to test your project.
 # enable_testing()
