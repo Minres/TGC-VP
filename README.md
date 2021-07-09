@@ -10,15 +10,38 @@ provides a comprehensive and consistent solution to develop processor cores.
 
 * you need to have a C++14 capable compiler, make, python, and cmake installed
 * install conan.io (see also http://docs.conan.io/en/latest/installation.html):
+  
   ```
   pip3 install --user conan
   ```
+  
+  It is advised to use conan version 1.36 or newer. In case of an older version please run
+  
+  ```sh
+
+  pip3 install --user --upgrade conan
+
+  ``` 
+  
+* create conan profile:
+  
+  ```sh
+
+  conan profile create default --detect
+
+  ```
+  
 * setup conan to use the minres repo:
+  
+  ```sh
+
+  conan remote add minres https://artifactory.minres.com/artifactory/api/conan/oss
+
   ```
-  conan remote add minres https://artifactory.minres.com/artifactory/api/conan/minres
-  ```
+  
 * checkout source from git
 * start an out-of-source build:
+  
   ```
   cd TGC-VP
   mkdir build
@@ -26,10 +49,13 @@ provides a comprehensive and consistent solution to develop processor cores.
   cmake ..
   cmake --build .
   ```
+  
 * if you encounter issues when linking wrt. c++11 symbols you might have run into GCC ABI incompatibility introduced from GCC 5.0 onwards. You can fix this by adding '-s compiler.libcxx=libstdc++11' to the conan call or changing compiler.libcxx to
+  
   ```
   compiler.libcxx=libstdc++11
   ```
+  
   in $HOME/.conan/profiles/default
 
 
