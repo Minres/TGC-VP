@@ -9,6 +9,7 @@
 
 #include <tgfs_vp/system.h>
 #include <generic/terminal.h>
+#include <tgfs_vp/rst_gen.h>
 
 #include <systemc>
 namespace tgfs_vp {
@@ -17,11 +18,10 @@ class tb : public sc_core::sc_module {
 public:
     tb(sc_core::sc_module_name const& nm);
     tgfs_vp::system top{"top"};
+    tgfs_vp::rst_gen rst_gen{"rst_gen"};
     sc_core::sc_vector<tlm::scc::tlm_signal<sc_dt::sc_logic>> gpio_s{"gpio_s", 32};
     sc_core::sc_signal<bool> rst_n{"rst_n"};
     vpvper::generic::terminal terminal{"terminal"};
-private:
-    void run();
 };
 
 } /* namespace tgfs_vp */

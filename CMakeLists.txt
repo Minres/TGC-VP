@@ -11,7 +11,7 @@ option(ENABLE_COVERAGE "Enable code coverage" OFF)
 option(ENABLE_SANITIZER "Enable address sanitizer" OFF)
 option(ENABLE_CLANGTIDY "Enable static analysis with clang-tidy." OFF)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
