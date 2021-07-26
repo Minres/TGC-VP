@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/scc/cmake)
 
-include(Conan)
+include(ConanInline)
 
 project(ecosystem-vp LANGUAGES C CXX VERSION 0.0.1)
 
@@ -27,7 +27,21 @@ if(ENABLE_SANITIZER)
 endif()
 
 setup_conan(TARGETS)
+conan_cmake_configure(REQUIRES fmt/6.1.2 zlib/1.2.11 boost/1.75.0 gsl-lite/0.37.0 systemc/2.3.3 systemc-cci/1.0.0 elfio/3.8 tcc/0.9.27 seasocks/1.4.4 
+                      GENERATORS cmake_find_package
+                      OPTIONS fmt:header_only=True boost:fPIC=True boost:shared=False boost:header_only=False systemc:shared=True systemc-cci:shared=True systemc:disable_virtual_bind=False
+                      )
 
+conan_cmake_autodetect(settings)
+if(CMAKE_CXX_STANDARD)
+	set(settings ${settings} compiler.cppstd=${CMAKE_CXX_STANDARD})
+endif()
+message("Conan settings are ${settings}")
+conan_cmake_install(PATH_OR_REFERENCE .
+                    BUILD missing
+                    REMOTE conan-center
+                    SETTINGS ${settings})
+                    
 set(Boost_NO_BOOST_CMAKE ON) #  Don't do a find_package in config mode before searching for a regular boost install.
 #set(Boost_NO_SYSTEM_PATHS ON)
 #set(Boost_USE_STATIC_LIBS OFF)
@@ -35,8 +49,12 @@ set(Boost_NO_BOOST_CMAKE ON) #  Don't do a find_package in config mode before se
 #set(Boost_USE_STATIC_RUNTIME OFF)
 
 
-find_package(Boost REQUIRED COMPONENTS program_options)
-find_package(OSCISystemC REQUIRED)
+find_package(Boost REQUIRED COMPONENTS program_options QUIET)
+include(FindSystemCPackage)
+find_package(fmt)
+find_package(tcc)
+find_package(elfio)
+
 set(CLANG_FORMAT_EXCLUDE_PATTERNS "scc")
 find_package(ClangFormat)
 
