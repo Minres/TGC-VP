@@ -68,7 +68,7 @@ void CLIParser::build() {
                     "Disable asynchronous logging")
             ("disass,d", po::value<std::string>()->implicit_value(""),
                     "Enables disassembly")
-            ("elf,l", po::value<std::string>(),
+            ("elf,f", po::value<std::string>(),
                     "ELF file to load")
             ("gdb-port,g", po::value<unsigned short>()->default_value(0),
                     "enable gdb server and specify port to use")
