@@ -26,7 +26,7 @@ if(ENABLE_SANITIZER)
   set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fsanitize=address")
 endif()
 
-setup_conan(TARGETS)
+conan_check()
 conan_cmake_configure(REQUIRES fmt/6.1.2 zlib/1.2.11 boost/1.75.0 gsl-lite/0.37.0 systemc/2.3.3 systemc-cci/1.0.0 elfio/3.8 tcc/0.9.27 seasocks/1.4.4 
                       GENERATORS cmake_find_package
                       OPTIONS fmt:header_only=True boost:fPIC=True boost:shared=False boost:header_only=False systemc:shared=True systemc-cci:shared=True systemc:disable_virtual_bind=False
