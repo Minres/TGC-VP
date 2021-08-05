@@ -1,0 +1,8 @@
+# Commands to start on workspace startup
+tasks:
+  - init: python3 -mpip install conan
+    command: |
+       mkdir -p build
+       cd build
+       cmake -DCMAKE_BUILD_TYPE=Release ..
+       make -j tgc-vp 
