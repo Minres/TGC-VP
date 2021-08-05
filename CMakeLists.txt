@@ -40,7 +40,6 @@ endif()
 message("Conan settings are ${settings}")
 conan_cmake_install(PATH_OR_REFERENCE .
                     BUILD missing
-                    REMOTE conan-center
                     SETTINGS ${settings})
                     
 set(Boost_NO_BOOST_CMAKE ON) #  Don't do a find_package in config mode before searching for a regular boost install.
