@@ -5,4 +5,4 @@ tasks:
        mkdir -p build
        cd build
        cmake -DCMAKE_BUILD_TYPE=Release ..
-       make -j tgc-vp 
+       make -j tgc-vp
