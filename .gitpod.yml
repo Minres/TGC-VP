@@ -10,7 +10,6 @@ tasks:
        echo 'systemc/2.3.3' >> conanfile.txt
        echo 'systemc-cci/1.0.0' >> conanfile.txt
        echo 'elfio/3.8' >> conanfile.txt
-       echo 'tcc/0.9.27' >> conanfile.txt
        echo 'seasocks/1.4.4' >> conanfile.txt
        conan install . --build missing --settings build_type=Release --settings compiler=gcc --settings compiler.version=9 --settings compiler.libcxx=libstdc++11 --settings compiler.cppstd=11
        conan install . --build missing --settings build_type=Debug   --settings compiler=gcc --settings compiler.version=9 --settings compiler.libcxx=libstdc++11 --settings compiler.cppstd=11
