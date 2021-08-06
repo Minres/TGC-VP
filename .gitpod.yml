@@ -1,6 +1,7 @@
 # Commands to start on workspace startup
 tasks:
   - init: | 
+       python3 -m pip install --upgrade pip
        python3 -mpip install conan
     command: |
        mkdir -p build
