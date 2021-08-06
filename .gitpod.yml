@@ -1,6 +1,11 @@
 # Commands to start on workspace startup
 tasks:
-  - init: python3 -mpip install conan
+  - init: | 
+       python3 -mpip install conan
+       echo 'boost/1.75.0' > conanfile.txt
+       conan install . --build missing --settings build_type=Release --settings compiler=gcc --settings compiler.version=9 --settings compiler.libcxx=libstdc++11 --settings compiler.cppstd=11
+       conan install . --build missing --settings build_type=Debug   --settings compiler=gcc --settings compiler.version=9 --settings compiler.libcxx=libstdc++11 --settings compiler.cppstd=11
+       rm conanfile.txt
     command: |
        mkdir -p build
        cd build
