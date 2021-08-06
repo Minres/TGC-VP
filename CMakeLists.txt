@@ -25,12 +25,38 @@ if(ENABLE_SANITIZER)
   set(CMAKE_EXE_LINKER_FLAGS    "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address")
   set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fsanitize=address")
 endif()
-
+set(CONAN_BOOST_OPTIONS
+boost:fPIC=True
+boost:shared=True
+boost:header_only=False 
+boost:without_context=True
+boost:without_contract=True
+boost:without_coroutine=True
+boost:without_fiber=True
+boost:without_graph=True
+boost:without_graph_parallel=True
+boost:without_iostreams=True
+boost:without_json=True
+boost:without_locale=True
+boost:without_log=True
+boost:without_math=True
+boost:without_mpi=True
+boost:without_nowide=True
+boost:without_python=True
+boost:without_random=True
+boost:without_regex=True
+boost:without_serialization=True
+boost:without_stacktrace=True
+boost:without_test=True
+boost:without_timer=True
+boost:without_type_erasure=True
+boost:without_wave=True
+)
 conan_check() 
 conan_add_remote(NAME minres URL https://artifactory.minres.com/artifactory/api/conan/oss)
 conan_cmake_configure(REQUIRES fmt/6.1.2 zlib/1.2.11 boost/1.75.0 gsl-lite/0.37.0 systemc/2.3.3 systemc-cci/1.0.0 elfio/3.8 tcc/0.9.27 seasocks/1.4.4 
                       GENERATORS cmake_find_package
-                      OPTIONS fmt:header_only=True boost:fPIC=True boost:shared=True boost:header_only=False systemc:shared=True systemc-cci:shared=True systemc:disable_virtual_bind=False
+                      OPTIONS fmt:header_only=True ${CONAN_BOOST_OPTIONS} systemc:shared=True systemc-cci:shared=True systemc:disable_virtual_bind=False
                       )
 
 conan_cmake_autodetect(settings)

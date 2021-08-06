@@ -2,18 +2,6 @@
 tasks:
   - init: | 
        python3 -mpip install conan
-       echo '[requires]'    > conanfile.txt
-       echo 'fmt/6.1.2' >> conanfile.txt
-       echo 'zlib/1.2.11' >> conanfile.txt
-       echo 'boost/1.75.0' >> conanfile.txt
-       echo 'gsl-lite/0.37.0' >> conanfile.txt
-       echo 'systemc/2.3.3' >> conanfile.txt
-       echo 'systemc-cci/1.0.0' >> conanfile.txt
-       echo 'elfio/3.8' >> conanfile.txt
-       echo 'seasocks/1.4.4' >> conanfile.txt
-       conan install . --build missing --settings build_type=Release --settings compiler=gcc --settings compiler.version=9 --settings compiler.libcxx=libstdc++11 --settings compiler.cppstd=11
-       conan install . --build missing --settings build_type=Debug   --settings compiler=gcc --settings compiler.version=9 --settings compiler.libcxx=libstdc++11 --settings compiler.cppstd=11
-       rm conanfile.txt
     command: |
        mkdir -p build
        cd build
