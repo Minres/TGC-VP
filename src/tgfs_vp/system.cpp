@@ -36,7 +36,6 @@ system::system(sc_core::sc_module_name nm)
     router.initiator.at(++i)(mem_ram.target);
     router.set_target_range(i, 0x80000000, 128_kB);
 
-    uart0.clk_i(tlclk_s);
     uart1.clk_i(tlclk_s);
     qspi0.clk_i(tlclk_s);
     qspi1.clk_i(tlclk_s);
@@ -84,8 +83,6 @@ system::system(sc_core::sc_module_name nm)
     pins_i(gpio0.pins_i);
     gpio0.pins_o(pins_o);
 
-    gpio0.iof0_i[17](uart0.tx_o);
-    uart0.rx_i(gpio0.iof0_o[16]);
     uart0.irq_o(global_int_s[3]);
 
     gpio0.iof0_i[5](qspi1.sck_o);
