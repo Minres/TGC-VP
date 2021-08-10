@@ -20,24 +20,27 @@ build_type='Debug'
 current_dir = os.path.dirname( os.path.realpath(__file__))
 project_dir = os.path.dirname(current_dir)
 logging.info(f"Project dir: {project_dir}")
-pysysc.read_config_from_conan(os.path.join(project_dir, 'conanfile.txt'), build_type)
+pysysc.read_config_from_conan(os.path.join(project_dir, 'build/Debug/conanfile.txt'), build_type)
 pysysc.load_systemc()
 ###############################################################################
 logging.debug("Loading SC-Components lib")
 pysysc.add_include_path(os.path.join(project_dir, 'scc/src/common'))
-pysysc.add_library('scc_util.h', os.path.join(project_dir, 'build/%s/lib/libscc-util.so'%build_type))
+pysysc.add_library('scc_util.h', os.path.join(project_dir, 'build/%s/scc/src/common/libscc-util.so'%build_type))
 pysysc.add_include_path(os.path.join(project_dir, 'scc/third_party'))
+pysysc.add_include_path(os.path.join(project_dir, 'scc/third_party/scv-tr/src'))
+pysysc.add_library('scv-tr.h', os.path.join(project_dir, 'build/%s/scc/third_party/scv-tr/src/libscv-tr.so'%build_type))
 pysysc.add_include_path(os.path.join(project_dir, 'scc/src/sysc'))
-pysysc.add_library('scc_sysc.h', os.path.join(project_dir, 'build/%s/lib/libscc-sysc.so'%build_type))
+pysysc.add_library('scc_sysc.h', os.path.join(project_dir, 'build/%s/scc/src/sysc/libscc-sysc.so'%build_type))
 pysysc.add_include_path(os.path.join(project_dir, 'scc/src/components'))
 ###############################################################################
 logging.debug("Loading TGC-VP Peripherals libs")
 pysysc.add_include_path(os.path.join(project_dir, 'vpvper'))
-pysysc.add_library('sifive.h', os.path.join(project_dir, f'build/{build_type}/lib/libvpvper_sifive.so'))
+pysysc.add_library('sifive.h', os.path.join(project_dir, f'build/{build_type}/vpvper/libvpvper_sifive.so'))
+pysysc.add_library('generic/uart_terminal.h', os.path.join(project_dir, f'build/{build_type}/vpvper/libvpvper_generic.so'))
 ###############################################################################
 logging.debug("Loading TGC-ISS")
 pysysc.add_include_path(os.path.join(project_dir, 'tgc-iss/dbt-rise-tgc/incl/sysc'))
-pysysc.add_library('core_complex.h', os.path.join(project_dir, f'build/{build_type}/tgc-iss/dbt-rise-tgc/lib/libdbt-core-tgc_sc.so'))
+pysysc.add_library('core_complex.h', os.path.join(project_dir, f'build/{build_type}/tgc-iss/dbt-rise-tgc/libdbt-rise-tgc_sc.so'))
 
 ###############################################################################
 # Include section
@@ -62,12 +65,12 @@ class TopModule(cpp.scc.PyScModule):
         self.plic  = Module(cpp.vpvper.sifive.plic).create("plic")
         self.clint = Module(cpp.vpvper.sifive.clint).create("clint")
         self.pwms  = [Module(cpp.vpvper.sifive.pwm).create(f"pwm{idx}") for idx in range(3)]
-#        self.uarts = [Module(cpp.vpvper.sifive.uart).create(f"uart{idx}") for idx in range(0,1)]
+        self.uart  = Module(cpp.vpvper.generic.uart_terminal).create("uart0")
         
         self.mem_qspi = Module(cpp.scc.memory[2**24,32]).create("mem_qspi")
         self.mem_ram  = Module(cpp.scc.memory[1024,32]).create("mem_ram")
         self.core_complex = Module(cpp.sysc.tgfs.core_complex).create("core_complex")
-        self.router = Module(cpp.scc.router[32]).create("router", 9)
+        self.router = Module(cpp.scc.router[32]).create("router", 10)
         ###############################################################################
         # connect them
         ###############################################################################
@@ -88,11 +91,10 @@ class TopModule(cpp.scc.PyScModule):
         .sink(self.plic.rst_i)\
         .sink(self.prci.rst_i)\
         .sink(self.clint.rst_i)\
+        .sink(self.uart.rst_i)\
         .sink(self.core_complex.rst_i)
-#        .sink(self.gpio.rst_i)\
 
         [self.rst.sink(i.rst_i) for i in self.pwms]
-#        [self.rst.sink(i.rst_i) for i in self.uarts]
         Signal("erst_s").src(self.rst_gen.rst_n).sink(self.aon.erst_n_i)
 
         # Interrupts
@@ -103,6 +105,8 @@ class TopModule(cpp.scc.PyScModule):
         self.global_irq = [Signal(f"global_irq_{idx}").sink(self.plic.global_interrupts_i.at(idx)) for idx in range(self.plic.global_interrupts_i.size())]
         [Signal(f"local_irq_{idx}").sink(self.core_complex.local_irq_i.at(idx)) for idx in range(self.core_complex.local_irq_i.size())]
         
+        self.uart.irq_o.bind(self.global_irq[3].signal)
+
         self.pwms[0].cmpip_o[0].bind(self.global_irq[40].signal)
         self.pwms[0].cmpip_o[1].bind(self.global_irq[41].signal)
         self.pwms[0].cmpip_o[2].bind(self.global_irq[42].signal)
@@ -138,6 +142,8 @@ class TopModule(cpp.scc.PyScModule):
         self.router.set_target_range(0, 0x20000000, 2**24)
         Connection().src(self.router.initiator.at(8)).sink(self.mem_ram.target)
         self.router.set_target_range(0, 0x80000000, 1024)   
+        Connection().src(self.router.initiator.at(9)).sink(self.uart.socket)
+        self.router.set_target_range(0, 0x10013000, 0x1c)
         
     def EndOfElaboration(self):
         print("Elaboration finished")
