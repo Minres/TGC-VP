@@ -1,6 +1,5 @@
 # Commands to start on workspace startup
-image: 
-  file: .gitpod.Dockerfile
+image: eyck/gitpod-riscv-tools
 tasks:
   - init: | 
        python3 -m pip install --upgrade pip
