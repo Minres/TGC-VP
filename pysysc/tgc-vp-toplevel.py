@@ -61,7 +61,6 @@ class TopModule(cpp.scc.PyScModule):
         self.rst_gen = Module(cpp.tgfs_vp.rst_gen).create("rst_gen")
         self.prci  = Module(cpp.vpvper.sifive.prci).create("prci")
         self.aon   = Module(cpp.vpvper.sifive.aon).create("aon")
-#        self.gpio  = Module(cpp.vpvper.sifive.gpio).create("gpio")
         self.plic  = Module(cpp.vpvper.sifive.plic).create("plic")
         self.clint = Module(cpp.vpvper.sifive.clint).create("clint")
         self.pwms  = [Module(cpp.vpvper.sifive.pwm).create(f"pwm{idx}") for idx in range(3)]
@@ -80,10 +79,8 @@ class TopModule(cpp.scc.PyScModule):
         .sink(self.plic.clk_i)\
         .sink(self.clint.tlclk_i)\
         .sink(self.core_complex.clk_i)
-#        .sink(self.gpio.clk_i)\
 
         [self.clk.sink(i.clk_i) for i in self.pwms]
-#        [self.clk.sink(i.clk_i) for i in self.uarts]
 
         self.lfclk = Signal("lfclk").src(self.aon.lfclkc_o).sink(self.clint.lfclk_i)
     
@@ -101,7 +98,6 @@ class TopModule(cpp.scc.PyScModule):
         Signal("timer_irq_s").src(self.clint.mtime_int_o).sink(self.core_complex.timer_irq_i)
         Signal("sw_irq_s").src(self.clint.msip_int_o).sink(self.core_complex.sw_irq_i)
         Signal("core_irq_s").src(self.plic.core_interrupt_o).sink(self.core_complex.global_irq_i)
-# warum wird SignalVector nicht gefunden?        SignalVector("local_irq_s").sink(self.core_complex.local_irq_i)
         self.global_irq = [Signal(f"global_irq_{idx}").sink(self.plic.global_interrupts_i.at(idx)) for idx in range(self.plic.global_interrupts_i.size())]
         [Signal(f"local_irq_{idx}").sink(self.core_complex.local_irq_i.at(idx)) for idx in range(self.core_complex.local_irq_i.size())]
         
@@ -127,23 +123,26 @@ class TopModule(cpp.scc.PyScModule):
         Connection().src(self.router.initiator.at(0)).sink(self.clint.socket)
         self.router.set_target_range(0, 0x2000000, 0xc000)
         Connection().src(self.router.initiator.at(1)).sink(self.plic.socket)
-        self.router.set_target_range(0, 0xc000000, 0x200008)
+        self.router.set_target_range(1, 0xc000000, 0x200008)
         Connection().src(self.router.initiator.at(2)).sink(self.aon.socket)
-        self.router.set_target_range(0, 0x10000000, 0x150)
+        self.router.set_target_range(2, 0x10000000, 0x150)
         Connection().src(self.router.initiator.at(3)).sink(self.prci.socket)
-        self.router.set_target_range(0, 0x10008000, 0x14)
+        self.router.set_target_range(3, 0x10008000, 0x14)
         Connection().src(self.router.initiator.at(4)).sink(self.pwms[0].socket)
-        self.router.set_target_range(0, 0x10015000, 0x30)
+        self.router.set_target_range(4, 0x10015000, 0x30)
         Connection().src(self.router.initiator.at(5)).sink(self.pwms[1].socket)
-        self.router.set_target_range(0, 0x10025000, 0x30)
+        self.router.set_target_range(5, 0x10025000, 0x30)
         Connection().src(self.router.initiator.at(6)).sink(self.pwms[2].socket)
-        self.router.set_target_range(0, 0x10035000, 0x30)
+        self.router.set_target_range(6, 0x10035000, 0x30)
         Connection().src(self.router.initiator.at(7)).sink(self.mem_qspi.target)
-        self.router.set_target_range(0, 0x20000000, 2**24)
+        self.router.set_target_range(7, 0x20000000, 2**24)
         Connection().src(self.router.initiator.at(8)).sink(self.mem_ram.target)
-        self.router.set_target_range(0, 0x80000000, 1024)   
+        self.router.set_target_range(8, 0x80000000, 1024)   
         Connection().src(self.router.initiator.at(9)).sink(self.uart.socket)
-        self.router.set_target_range(0, 0x10013000, 0x1c)
+        self.router.set_target_range(9, 0x10013000, 0x1c)
+
+        # Load FW         
+        self.core_complex.elf_file.set_value(os.path.join(project_dir, 'fw/hello-world/hello'))
         
     def EndOfElaboration(self):
         print("Elaboration finished")
@@ -170,3 +169,4 @@ if __name__ == "__main__":
     Simulation.configure(enable_vcd=False)
     Simulation.run()
     logging.debug("Done")
+    
