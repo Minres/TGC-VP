@@ -15,12 +15,12 @@ USER root
 # so make sure we get those too.
 WORKDIR /opt/riscv
 RUN apt-get update && \
-	apt-get install -y autoconf automake autotools-dev curl python3 libmpc-dev libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev libexpat-dev && \
+	apt-get install -y autoconf automake autotools-dev curl python3 python3-pip libmpc-dev libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev libexpat-dev cmake gdb && \
 	apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN git clone --recursive https://github.com/riscv/riscv-gnu-toolchain && \
   cd riscv-gnu-toolchain && \
     ./configure --prefix=/opt/riscv --without-system-zlib --enable-multilib --with-arch=rv32gc --with-abi=ilp32d && \
-	make -j && make install && \
+	make -j newlib && \
   cd .. && \
     rm -rf riscv-gnu-toolchain
     
