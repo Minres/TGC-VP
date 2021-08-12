@@ -112,9 +112,10 @@ add_subdirectory(tgc-iss/dbt-rise-core)
 add_subdirectory(tgc-iss/dbt-rise-tgc)
 add_subdirectory(vpvper)
 add_subdirectory(src)
-add_custom_target(fw-hello-world ALL COMMAND make -C fw/hello-world
+if(NOT NO_FW_BUILD)
+	add_custom_target(fw-hello-world ALL COMMAND make -C fw/hello-world
                    USES_TERMINAL WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-
+endif()
 # CTest is a testing tool that can be used to test your project.
 # enable_testing()
 # add_test(NAME example
