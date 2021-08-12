@@ -16,7 +16,7 @@
 #include <sifive/spi.h>
 #include <sysc/core_complex.h>
 #include <sifive/uart.h>
-#include <generic/uart_terminal.h>
+#include <sifive/uart_terminal.h>
 #include <cci_configuration>
 #include <scc/memory.h>
 #include <scc/router.h>
@@ -42,7 +42,7 @@ public:
 private:
     sysc::tgfs::core_complex core_complex{"core_complex"};
     scc::router<> router;
-    vpvper::generic::uart_terminal uart0{"uart0"};
+    vpvper::sifive::uart_terminal uart0{"uart0"};
     vpvper::sifive::uart  uart1{"uart1"};
     std::unique_ptr<vpvper::sifive::spi> qspi0_ptr, qspi1_ptr, qspi2_ptr;
     vpvper::sifive::pwm pwm0{"pwm0"}, pwm1{"pwm1"}, pwm2{"pwm2"};
