@@ -36,7 +36,6 @@ pysysc.add_include_path(os.path.join(project_dir, 'scc/src/components'))
 logging.debug("Loading TGC-VP Peripherals libs")
 pysysc.add_include_path(os.path.join(project_dir, 'vpvper'))
 pysysc.add_library('sifive.h', os.path.join(project_dir, f'build/{build_type}/vpvper/libvpvper_sifive.so'))
-pysysc.add_library('generic/uart_terminal.h', os.path.join(project_dir, f'build/{build_type}/vpvper/libvpvper_generic.so'))
 ###############################################################################
 logging.debug("Loading TGC-ISS")
 pysysc.add_include_path(os.path.join(project_dir, 'tgc-iss/dbt-rise-tgc/incl/sysc'))
@@ -64,7 +63,7 @@ class TopModule(cpp.scc.PyScModule):
         self.plic  = Module(cpp.vpvper.sifive.plic).create("plic")
         self.clint = Module(cpp.vpvper.sifive.clint).create("clint")
         self.pwms  = [Module(cpp.vpvper.sifive.pwm).create(f"pwm{idx}") for idx in range(3)]
-        self.uart  = Module(cpp.vpvper.generic.uart_terminal).create("uart0")
+        self.uart  = Module(cpp.vpvper.sifive.uart_terminal).create("uart0")
         
         self.mem_qspi = Module(cpp.scc.memory[2**24,32]).create("mem_qspi")
         self.mem_ram  = Module(cpp.scc.memory[1024,32]).create("mem_ram")
