@@ -9,7 +9,7 @@ import logging
 import cppyy
 from cppyy import gbl as cpp
 import pysysc
-from pysysc.structural import Connection, Module, Signal, Simulation
+from pysysc.structural import Connection, Module, Signal, Clock, Simulation
 import pysysc_scc
 
 ###############################################################################
@@ -49,7 +49,6 @@ class TopModule(cpp.scc.PyScModule):
         # instantiate
         ###############################################################################
         self.rst_gen = Module(cpp.tgfs_vp.rst_gen).create("rst_gen")
-        self.prci  = Module(cpp.vpvper.sifive.prci).create("prci")
         self.aon   = Module(cpp.vpvper.sifive.aon).create("aon")
         self.clint = Module(cpp.vpvper.sifive.clint).create("clint")
         self.uart  = Module(cpp.vpvper.sifive.uart_terminal).create("uart0")
@@ -57,12 +56,11 @@ class TopModule(cpp.scc.PyScModule):
         self.mem_qspi = Module(cpp.scc.memory[2**24,32]).create("mem_qspi")
         self.mem_ram  = Module(cpp.scc.memory[1024,32]).create("mem_ram")
         self.core_complex = Module(cpp.sysc.tgfs.core_complex).create("core_complex")
-        self.router = Module(cpp.scc.router[32]).create("router", 6)
+        self.router = Module(cpp.scc.router[32]).create("router", 5)
         ###############################################################################
         # connect them
         ###############################################################################
-        self.clk = Signal("clk")\
-        .src(self.prci.hfclk_o)\
+        Clock("clock", 64.5, 'SC_NS')\
         .sink(self.aon.clk_i)\
         .sink(self.clint.tlclk_i)\
         .sink(self.core_complex.clk_i)
@@ -70,7 +68,6 @@ class TopModule(cpp.scc.PyScModule):
         self.lfclk = Signal("lfclk").src(self.aon.lfclkc_o).sink(self.clint.lfclk_i)
     
         self.rst = Signal("rst").src(self.aon.rst_o)\
-        .sink(self.prci.rst_i)\
         .sink(self.clint.rst_i)\
         .sink(self.uart.rst_i)\
         .sink(self.core_complex.rst_i)
@@ -89,14 +86,12 @@ class TopModule(cpp.scc.PyScModule):
         self.router.set_target_range(0, 0x2000000, 0xc000)
         Connection().src(self.router.initiator.at(1)).sink(self.aon.socket)
         self.router.set_target_range(1, 0x10000000, 0x150)
-        Connection().src(self.router.initiator.at(2)).sink(self.prci.socket)
-        self.router.set_target_range(2, 0x10008000, 0x14)
-        Connection().src(self.router.initiator.at(3)).sink(self.mem_qspi.target)
-        self.router.set_target_range(3, 0x20000000, 2**24)
-        Connection().src(self.router.initiator.at(4)).sink(self.mem_ram.target)
-        self.router.set_target_range(4, 0x80000000, 1024)   
-        Connection().src(self.router.initiator.at(5)).sink(self.uart.socket)
-        self.router.set_target_range(5, 0x10013000, 0x1c)
+        Connection().src(self.router.initiator.at(2)).sink(self.mem_qspi.target)
+        self.router.set_target_range(2, 0x20000000, 2**24)
+        Connection().src(self.router.initiator.at(3)).sink(self.mem_ram.target)
+        self.router.set_target_range(3, 0x80000000, 1024)   
+        Connection().src(self.router.initiator.at(4)).sink(self.uart.socket)
+        self.router.set_target_range(4, 0x10013000, 0x1c)
 
         # Load FW         
         self.core_complex.elf_file.set_value(os.path.join(project_dir, 'fw/hello-world/hello'))
