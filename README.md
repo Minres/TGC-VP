@@ -12,7 +12,7 @@ Using gitpod you can run the VP in the cloud. Just visit https://www.gitpod.io/#
 After the build finished you can run
 
 ```
-src/tgc-vp -f ../fw/hello-world/hello.elf 
+src/tgc-vp -f ../fw/hello-world/hello
 ```
 
 You will see on console the prints of the hello world firmware at fw/hello-world/hello.c

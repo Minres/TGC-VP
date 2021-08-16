@@ -11,6 +11,7 @@ option(ENABLE_COVERAGE "Enable code coverage" OFF)
 option(ENABLE_SANITIZER "Enable address sanitizer" OFF)
 option(ENABLE_CLANGTIDY "Enable static analysis with clang-tidy." OFF)
 
+set(SCC_LIB_ONLY ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -25,6 +26,7 @@ if(ENABLE_SANITIZER)
   set(CMAKE_EXE_LINKER_FLAGS    "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address")
   set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fsanitize=address")
 endif()
+
 set(CONAN_BOOST_OPTIONS
 boost:fPIC=True
 boost:shared=True
@@ -52,11 +54,18 @@ boost:without_timer=True
 boost:without_type_erasure=True
 boost:without_wave=True
 )
+set(CONAN_PACKAGE_LIST fmt/6.1.2 zlib/1.2.11 boost/1.75.0 gsl-lite/0.37.0 elfio/3.8 tcc/0.9.27 seasocks/1.4.4)
+set(CONAN_PACKAGE_OPTIONS fmt:header_only=True ${CONAN_BOOST_OPTIONS})
+if(NOT USE_CWR_SYSTEMC AND NOT USE_NCSC_SYSTEMC)
+	set(CONAN_PACKAGE_LIST ${CONAN_PACKAGE_LIST} systemc/2.3.3 systemc-cci/1.0.0) 
+	set(CONAN_PACKAGE_OPTIONS ${CONAN_PACKAGE_OPTIONS} systemc:shared=True systemc-cci:shared=True systemc:disable_virtual_bind=False)
+endif()
+
 conan_check() 
 conan_add_remote(NAME minres URL https://artifactory.minres.com/artifactory/api/conan/oss)
-conan_cmake_configure(REQUIRES fmt/6.1.2 zlib/1.2.11 boost/1.75.0 gsl-lite/0.37.0 systemc/2.3.3 systemc-cci/1.0.0 elfio/3.8 tcc/0.9.27 seasocks/1.4.4 
+conan_cmake_configure(REQUIRES ${CONAN_PACKAGE_LIST}
                       GENERATORS cmake_find_package
-                      OPTIONS fmt:header_only=True ${CONAN_BOOST_OPTIONS} systemc:shared=True systemc-cci:shared=True systemc:disable_virtual_bind=False
+                      OPTIONS ${CONAN_PACKAGE_OPTIONS}
                       )
 
 conan_cmake_autodetect(settings)
@@ -110,11 +119,14 @@ endif ()
 add_subdirectory(scc)
 add_subdirectory(tgc-iss/dbt-rise-core)
 add_subdirectory(tgc-iss/dbt-rise-tgc)
-add_subdirectory(vpvper)
-add_subdirectory(src)
-add_custom_target(fw-hello-world ALL COMMAND make -C fw/hello-world
+if(NOT USE_CWR_SYSTEMC)
+	add_subdirectory(vpvper)
+	add_subdirectory(src)
+endif()
+if(NOT NO_FW_BUILD)
+	add_custom_target(fw-hello-world ALL COMMAND make -C fw/hello-world
                    USES_TERMINAL WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-
+endif()
 # CTest is a testing tool that can be used to test your project.
 # enable_testing()
 # add_test(NAME example
