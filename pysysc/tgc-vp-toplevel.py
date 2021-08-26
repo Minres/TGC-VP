@@ -94,7 +94,9 @@ class TopModule(cpp.scc.PyScModule):
         self.router.set_target_range(4, 0x10013000, 0x1c)
 
         # Load FW         
-        self.core_complex.elf_file.set_value(os.path.join(project_dir, 'fw/hello-world/hello'))
+        self.core_complex.instance.elf_file.set_value(os.path.join(project_dir, 'fw/hello-world/hello.elf'))
+        #self.core_complex.instance.enable_disass.set_value(True)
+
         
     def EndOfElaboration(self):
         print("Elaboration finished")

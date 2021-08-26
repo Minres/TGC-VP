@@ -6,6 +6,8 @@ include(ConanInline)
 project(ecosystem-vp LANGUAGES C CXX VERSION 0.0.1)
 
 option(ENABLE_SCV "Enable the use of SCV" ON)
+option(LIBS_ONLY "Just build the shared libraries needed to build the VP" OFF)
+option(NO_FW_BUILD "Disable the automatic rebuild of firmware running on the VP" OFF)
 option(EN_EXT_DEBUG "Enable extended debug output at runtime" OFF)
 option(ENABLE_COVERAGE "Enable code coverage" OFF)
 option(ENABLE_SANITIZER "Enable address sanitizer" OFF)
@@ -85,10 +87,6 @@ set(Boost_NO_BOOST_CMAKE ON) #  Don't do a find_package in config mode before se
 
 
 find_package(Boost REQUIRED COMPONENTS program_options QUIET)
-include(FindSystemCPackage)
-find_package(fmt)
-find_package(tcc)
-find_package(elfio)
 
 set(CLANG_FORMAT_EXCLUDE_PATTERNS "scc")
 find_package(ClangFormat)
@@ -121,12 +119,15 @@ add_subdirectory(tgc-iss/dbt-rise-core)
 add_subdirectory(tgc-iss/dbt-rise-tgc)
 if(NOT USE_CWR_SYSTEMC)
 	add_subdirectory(vpvper)
+endif()
+if(NOT LIBS_ONLY)
 	add_subdirectory(src)
 endif()
 if(NOT NO_FW_BUILD)
 	add_custom_target(fw-hello-world ALL COMMAND make -C fw/hello-world
                    USES_TERMINAL WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 endif()
+
 # CTest is a testing tool that can be used to test your project.
 # enable_testing()
 # add_test(NAME example
