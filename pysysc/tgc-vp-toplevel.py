@@ -15,7 +15,7 @@ import pysysc_scc
 ###############################################################################
 # Include and load section
 ###############################################################################
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 build_type='Debug'
 ###############################################################################
 current_dir = os.path.dirname(os.path.realpath(__file__))
@@ -23,6 +23,7 @@ project_dir = os.path.dirname(current_dir)
 logging.info(f"Project dir: {project_dir}")
 pysysc.read_config_from_conan(os.path.join(project_dir, 'build/Debug/conanfile.txt'), build_type)
 pysysc.load_systemc()
+logging.root.setLevel(logging.DEBUG)
 ###############################################################################
 pysysc_scc.load_scc(project_dir, build_type)
 ###############################################################################
@@ -95,7 +96,7 @@ class TopModule(cpp.scc.PyScModule):
 
         # Load FW         
         self.core_complex.instance.elf_file.set_value(os.path.join(project_dir, 'fw/hello-world/prebuilt/hello.elf'))
-        #self.core_complex.instance.enable_disass.set_value(True)
+        self.core_complex.instance.enable_disass.set_value(True)
         
     def EndOfElaboration(self):
         print("Elaboration finished")
