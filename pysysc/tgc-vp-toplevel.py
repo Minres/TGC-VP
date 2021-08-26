@@ -96,7 +96,6 @@ class TopModule(cpp.scc.PyScModule):
         # Load FW         
         self.core_complex.instance.elf_file.set_value(os.path.join(project_dir, 'fw/hello-world/hello.elf'))
         #self.core_complex.instance.enable_disass.set_value(True)
-
         
     def EndOfElaboration(self):
         print("Elaboration finished")
