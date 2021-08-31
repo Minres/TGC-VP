@@ -37,6 +37,12 @@ You will see on console the prints of the hello world firmware at fw/hello-world
   
 * checkout source from git
 
+  ```sh
+
+  git clone --recursive -b develop https://github.com/Minres/TGC-VP.git 
+
+  ``` 
+
 * start an out-of-source build:
   
   ```
@@ -47,7 +53,7 @@ You will see on console the prints of the hello world firmware at fw/hello-world
   make -j tgc-vp
   ```
   
-* run the VP with pre-built frimware
+* run the VP with pre-built firmware
 
   ```
   src/tgc-vp -f ../fw/hello-world/hello.elf 
