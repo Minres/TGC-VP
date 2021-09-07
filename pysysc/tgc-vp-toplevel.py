@@ -16,24 +16,23 @@ import pysysc_scc
 # Include and load section
 ###############################################################################
 logging.basicConfig(level=logging.INFO)
-build_type='Debug'
 ###############################################################################
 current_dir = os.path.dirname(os.path.realpath(__file__))
 project_dir = os.path.dirname(current_dir)
 logging.info(f"Project dir: {project_dir}")
-pysysc.read_config_from_conan(os.path.join(project_dir, 'build/Debug/conanfile.txt'), build_type)
+pysysc.read_config_from_conan(os.path.join(project_dir, 'build/Debug/conanfile.txt'), 'Debug')
 pysysc.load_systemc()
 logging.root.setLevel(logging.DEBUG)
 ###############################################################################
-pysysc_scc.load_scc(project_dir, build_type)
+pysysc_scc.load_scc(project_dir)
 ###############################################################################
 logging.debug("Loading TGC-VP Peripherals libs")
 pysysc.add_include_path(os.path.join(project_dir, 'vpvper'))
-pysysc.add_library('sifive.h', os.path.join(project_dir, f'build/{build_type}/vpvper/libvpvper_sifive.so'))
+pysysc.add_library('sifive.h', 'libvpvper_sifive.so', project_dir)
 ###############################################################################
 logging.debug("Loading TGC-ISS")
 pysysc.add_include_path(os.path.join(project_dir, 'tgc-iss/dbt-rise-tgc/incl/sysc'))
-pysysc.add_library('core_complex.h', os.path.join(project_dir, f'build/{build_type}/tgc-iss/dbt-rise-tgc/libdbt-rise-tgc_sc.so'))
+pysysc.add_library('core_complex.h', 'libdbt-rise-tgc_sc.so', project_dir)
 
 ###############################################################################
 # Include section
@@ -95,7 +94,7 @@ class TopModule(cpp.scc.PyScModule):
         self.router.set_target_range(4, 0x10013000, 0x1c)
 
         # Load FW         
-        self.core_complex.instance.elf_file.set_value(os.path.join(project_dir, 'fw/hello-world/hello'))
+        self.core_complex.instance.elf_file.set_value(os.path.join(project_dir, 'fw/hello-world/prebuilt/hello.elf'))
         #self.core_complex.instance.enable_disass.set_value(True)
         
     def EndOfElaboration(self):
