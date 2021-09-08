@@ -10,7 +10,7 @@ import cppyy
 from cppyy import gbl as cpp
 import pysysc
 from pysysc.structural import Connection, Module, Signal, Clock, Simulation
-import pysysc_scc
+import pysysc.scc
 
 ###############################################################################
 # Include and load section
@@ -24,7 +24,7 @@ pysysc.read_config_from_conan(os.path.join(project_dir, 'build/Debug/conanfile.t
 pysysc.load_systemc()
 logging.root.setLevel(logging.DEBUG)
 ###############################################################################
-pysysc_scc.load_scc(project_dir)
+pysysc.scc.load_scc(project_dir)
 ###############################################################################
 logging.debug("Loading TGC-VP Peripherals libs")
 pysysc.add_include_path(os.path.join(project_dir, 'vpvper'))
