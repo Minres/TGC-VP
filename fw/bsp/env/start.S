@@ -17,11 +17,8 @@ _start:
 	la gp, __global_pointer$
 .option pop
 	la sp, _sp
-
-#if defined(ENABLE_SMP)
-	smp_pause(t0, t1)
-#endif
-
+ 	la	a5, trap_entry
+ 	csrw mtvec,a5
 	/* Load data section */
 	la a0, _data_lma
 	la a1, _data
@@ -49,24 +46,6 @@ _start:
 	la a0, __libc_fini_array
 	call atexit
 	call __libc_init_array
-
-#ifndef __riscv_float_abi_soft
-	/* Enable FPU */
-	li t0, MSTATUS_FS
-	csrs mstatus, t0
-	csrr t1, mstatus
-	and t1, t1, t0
-	beqz t1, 1f
-	fssr x0
-1:
-#endif
-
-#if defined(ENABLE_SMP)
-	smp_resume(t0, t1)
-
-	csrr a0, mhartid
-	bnez a0, 2f
-#endif
 
 	auipc ra, 0
 	addi sp, sp, -16

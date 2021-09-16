@@ -1,11 +1,14 @@
 # Commands to start on workspace startup
-image: eyck/gitpod-riscv-tools
+image: eyck/gitpod-riscv-tools:latest
+        #  file: .gitpod.Dockerfile
 tasks:
   - init: | 
        python3 -m pip install --upgrade pip
-       python3 -mpip install conan
+       python3 -m pip install conan
+       conan profile new default --detect --force
+       conan profile update settings.compiler.libcxx=libstdc++11 default
     command: |
        mkdir -p build
        cd build
-       cmake -DCMAKE_BUILD_TYPE=Release ..
+       cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON ..
        make -j
