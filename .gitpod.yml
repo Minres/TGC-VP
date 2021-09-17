@@ -6,8 +6,8 @@ tasks:
        python3 -m pip install --upgrade pip
        python3 -m pip install conan
        conan profile new default --detect --force
-       conan profile update settings.compiler.libcxx=libstdc++11 default
     command: |
+       conan profile update settings.compiler.libcxx=libstdc++11 default
        mkdir -p build
        cd build
        cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON ..

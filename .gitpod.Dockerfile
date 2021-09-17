@@ -1,4 +1,4 @@
-FROM gitpod/workspace-full:latest
+FROM gitpod/workspace-base:latest
 
 
 # Make a working folder and set the necessary environment variables.
@@ -23,5 +23,4 @@ RUN git clone --recursive https://github.com/riscv/riscv-gnu-toolchain && \
 	make -j newlib && \
   cd .. && \
     rm -rf riscv-gnu-toolchain
-    
 USER gitpod
