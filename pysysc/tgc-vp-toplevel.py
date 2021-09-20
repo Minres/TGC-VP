@@ -50,6 +50,7 @@ cppyy.include(os.path.join(project_dir, 'src/tgfs_vp/rst_gen.h'))
 # configure
 ###############################################################################
 scc.setup(logging.root.level)
+scc.configure(enable_vcd=True)
 ###############################################################################
 # instantiate
 ###############################################################################
@@ -62,7 +63,6 @@ dut.core_complex.instance.elf_file.set_value(os.path.join(project_dir, 'fw/hello
 # run if it is standalone
 ###############################################################################
 if __name__ == "__main__":
-    scc.configure(enable_vcd=False)
     Simulation.run()
     logging.debug("Done")
     
