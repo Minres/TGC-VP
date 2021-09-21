@@ -1,4 +1,4 @@
-FROM gitpod/workspace-base:latest
+FROM gitpod/workspace-full:latest
 
 
 # Make a working folder and set the necessary environment variables.
