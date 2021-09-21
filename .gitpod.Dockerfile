@@ -23,5 +23,4 @@ RUN git clone --recursive https://github.com/riscv/riscv-gnu-toolchain && \
 	make -j newlib && \
   cd .. && \
     rm -rf riscv-gnu-toolchain
-    
 USER gitpod

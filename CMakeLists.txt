@@ -58,7 +58,7 @@ boost:without_wave=True
 )
 set(CONAN_PACKAGE_LIST fmt/6.1.2 zlib/1.2.11 boost/1.75.0 gsl-lite/0.37.0 elfio/3.8 tcc/0.9.27 seasocks/1.4.4)
 set(CONAN_PACKAGE_OPTIONS fmt:header_only=True ${CONAN_BOOST_OPTIONS})
-if(NOT USE_CWR_SYSTEMC AND NOT USE_NCSC_SYSTEMC)
+if(NOT USE_CWR_SYSTEMC AND NOT USE_NCSC_SYSTEMC AND NOT DEFINED ENV{SYSTEMC_HOME})
 	set(CONAN_PACKAGE_LIST ${CONAN_PACKAGE_LIST} systemc/2.3.3 systemc-cci/1.0.0) 
 	set(CONAN_PACKAGE_OPTIONS ${CONAN_PACKAGE_OPTIONS} systemc:shared=True systemc-cci:shared=True systemc:disable_virtual_bind=False)
 endif()
@@ -67,18 +67,10 @@ conan_check()
 conan_add_remote(NAME minres URL https://artifactory.minres.com/artifactory/api/conan/oss)
 conan_cmake_configure(REQUIRES ${CONAN_PACKAGE_LIST}
                       GENERATORS cmake_find_package
-                      OPTIONS ${CONAN_PACKAGE_OPTIONS}
-                      )
-
+                      OPTIONS ${CONAN_PACKAGE_OPTIONS})
 conan_cmake_autodetect(settings)
-if(CMAKE_CXX_STANDARD)
-	set(settings ${settings} compiler.cppstd=${CMAKE_CXX_STANDARD})
-endif()
-message("Conan settings are ${settings}")
-conan_cmake_install(PATH_OR_REFERENCE .
-                    BUILD missing
-                    SETTINGS ${settings})
-                    
+conan_install()                    
+
 set(Boost_NO_BOOST_CMAKE ON) #  Don't do a find_package in config mode before searching for a regular boost install.
 #set(Boost_NO_SYSTEM_PATHS ON)
 #set(Boost_USE_STATIC_LIBS OFF)
