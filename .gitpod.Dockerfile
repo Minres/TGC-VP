@@ -23,4 +23,5 @@ RUN git clone --recursive https://github.com/riscv/riscv-gnu-toolchain && \
 	make -j newlib && \
   cd .. && \
     rm -rf riscv-gnu-toolchain
+RUN apt-get update && apt install default-jdk -y
 USER gitpod
