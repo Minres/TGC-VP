@@ -2,7 +2,8 @@
 image: eyck/gitpod-riscv-tools:latest
         #  file: .gitpod.Dockerfile
 tasks:
-  - init: | 
+  - init: |
+       export CONAN_USER_HOME=/workspace/conan
        python3 -m pip install --upgrade pip
        python3 -m pip install conan
        conan profile new default --detect --force
