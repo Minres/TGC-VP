@@ -17,6 +17,8 @@ src/tgc-vp -f ../fw/hello-world/hello
 
 You will see on console the prints of the hello world firmware at fw/hello-world/hello.c
 
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/from-referrer)
+
 ## Quick start
 
 * you need to have a C++14 capable compiler, make, python, and cmake installed
