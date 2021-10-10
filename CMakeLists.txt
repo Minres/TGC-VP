@@ -14,7 +14,7 @@ option(ENABLE_SANITIZER "Enable address sanitizer" OFF)
 option(ENABLE_CLANGTIDY "Enable static analysis with clang-tidy." OFF)
 
 set(SCC_LIB_ONLY ON)
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -28,9 +28,10 @@ if(ENABLE_SANITIZER)
   set(CMAKE_EXE_LINKER_FLAGS    "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address")
   set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fsanitize=address")
 endif()
-
+if($CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    add_compile_options(/vmg /wd26812) # suppress Warnung C26812: "enum class" gegenüber "enum" (Enum.3) bevorzugen
+endif()
 set(CONAN_BOOST_OPTIONS
-boost:fPIC=True
 boost:shared=True
 boost:header_only=False 
 boost:without_context=True
@@ -49,14 +50,17 @@ boost:without_nowide=True
 boost:without_python=True
 boost:without_random=True
 boost:without_regex=True
-boost:without_serialization=True
 boost:without_stacktrace=True
 boost:without_test=True
 boost:without_timer=True
 boost:without_type_erasure=True
 boost:without_wave=True
 )
-set(CONAN_PACKAGE_LIST fmt/6.1.2 zlib/1.2.11 boost/1.75.0 gsl-lite/0.37.0 elfio/3.8 tcc/0.9.27 seasocks/1.4.4)
+set(CONAN_PACKAGE_LIST fmt/6.1.2 zlib/1.2.11 boost/1.75.0 gsl-lite/0.37.0 elfio/3.8)# )
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+     list(APPEND CONAN_BOOST_OPTIONS boost:fPIC=True)
+     list(APPEND CONAN_PACKAGE_LIST tcc/0.9.27 seasocks/1.4.4)
+endif()
 set(CONAN_PACKAGE_OPTIONS fmt:header_only=True ${CONAN_BOOST_OPTIONS})
 if(NOT USE_CWR_SYSTEMC AND NOT USE_NCSC_SYSTEMC AND NOT DEFINED ENV{SYSTEMC_HOME})
 	set(CONAN_PACKAGE_LIST ${CONAN_PACKAGE_LIST} systemc/2.3.3 systemc-cci/1.0.0) 

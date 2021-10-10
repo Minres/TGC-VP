@@ -25,9 +25,8 @@ using namespace sc_core;
 namespace po = boost::program_options;
 
 namespace {
-const size_t ERROR_IN_COMMAND_LINE = 1;
+const size_t ERRORR_IN_COMMAND_LINE = 1;
 const size_t SUCCESS = 0;
-const size_t ERROR_UNHANDLED_EXCEPTION = 2;
 } // namespace
 
 int sc_main(int argc, char *argv[]) {
@@ -39,7 +38,7 @@ int sc_main(int argc, char *argv[]) {
     // CLI argument parsing & logging setup
     ///////////////////////////////////////////////////////////////////////////
     CLIParser parser(argc, argv);
-    if (!parser.is_valid()) return ERROR_IN_COMMAND_LINE;
+    if (!parser.is_valid()) return ERRORR_IN_COMMAND_LINE;
     ///////////////////////////////////////////////////////////////////////////
     // create the performance estimation module
     ///////////////////////////////////////////////////////////////////////////

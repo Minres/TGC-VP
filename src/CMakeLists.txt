@@ -11,11 +11,6 @@ find_package(Boost COMPONENTS program_options thread REQUIRED)
 ###############################################################################
 # SiFive
 ###############################################################################
-if(TARGET CONAN_PKG::seasocks)
- 	set(WEBSOCK_SRC
- 	 	sifive/gpio.cpp
- 	)
-endif()
 add_executable(${PROJECT_NAME}
 	sc_main.cpp
 	CLIParser.cpp
@@ -23,7 +18,7 @@ add_executable(${PROJECT_NAME}
 	tgfs_vp/system.cpp
 )
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_LIST_DIR})
-target_link_libraries(${PROJECT_NAME} PUBLIC dbt-rise-tgc_sc vpvper_sifive vpvper_sifive ${BOOST_program_options_LIBRARY})
+target_link_libraries(${PROJECT_NAME} PUBLIC dbt-rise-tgc_sc vpvper_generic vpvper_sifive ${BOOST_program_options_LIBRARY})
 if(TARGET Boost::program_options)
 	target_link_libraries(${PROJECT_NAME} PUBLIC Boost::program_options Boost::thread)
 else()
