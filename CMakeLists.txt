@@ -28,11 +28,10 @@ if(ENABLE_SANITIZER)
   set(CMAKE_EXE_LINKER_FLAGS    "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address")
   set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fsanitize=address")
 endif()
-if($CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     add_compile_options(/vmg /wd26812) # suppress Warnung C26812: "enum class" gegenüber "enum" (Enum.3) bevorzugen
 endif()
 set(CONAN_BOOST_OPTIONS
-boost:shared=True
 boost:header_only=False 
 boost:without_context=True
 boost:without_contract=True
