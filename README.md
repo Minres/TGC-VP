@@ -8,14 +8,23 @@ provides a comprehensive and consistent solution to develop processor cores.
 
 ## Ultra Quick start
 
-Using gitpod you can run the VP in the cloud. Just visit https://www.gitpod.io/#https://github.com/Minres/TGC-VP and follow the insturctions.
-After the build finished you can run
+Using gitpod you can run the VP in the cloud. Just visit [Gitpod.io](https://www.gitpod.io/#https://github.com/Minres/TGC-VP/tree/develop)
+and follow the instructions. After the build finished you can run
 
 ```
 
 src/tgc-vp -f ../fw/hello-world/prebuilt/hello.elf
 
 ```
+
+or use ctest:
+
+```
+
+ctest
+
+```
+
 
 You will see on console the prints of the hello world firmware at fw/hello-world/hello.c
 
