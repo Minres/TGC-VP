@@ -10,7 +10,9 @@
 #include <iss/log_categories.h>
 #include <scc/report.h>
 #include <stdexcept>
-
+#ifdef ERROR
+#undef ERROR
+#endif
 namespace po = boost::program_options;
 using namespace sc_core;
 
