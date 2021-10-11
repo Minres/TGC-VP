@@ -3,7 +3,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/scc/cmake
 
 include(ConanInline)
 
-project(ecosystem-vp LANGUAGES C CXX VERSION 0.0.1)
+project(ecosystem-vp LANGUAGES C CXX VERSION 1.0.0)
 
 option(ENABLE_SCV "Enable the use of SCV" ON)
 option(LIBS_ONLY "Just build the shared libraries needed to build the VP" OFF)
@@ -29,7 +29,7 @@ if(ENABLE_SANITIZER)
   set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fsanitize=address")
 endif()
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-    add_compile_options(/vmg /wd26812) # suppress Warnung C26812: "enum class" gegenüber "enum" (Enum.3) bevorzugen
+    add_compile_options(/vmg /wd26812) # suppress Warnung C26812: "enum class" gegenï¿½ber "enum" (Enum.3) bevorzugen
 endif()
 set(CONAN_BOOST_OPTIONS
 boost:header_only=False 
@@ -55,7 +55,12 @@ boost:without_timer=True
 boost:without_type_erasure=True
 boost:without_wave=True
 )
-set(CONAN_PACKAGE_LIST fmt/6.1.2 zlib/1.2.11 boost/1.75.0 gsl-lite/0.37.0 elfio/3.8)# )
+if (UNIX)
+    list(APPEND CONAN_BOOST_OPTIONS boost:fPIC=True boost:shared=True)
+endif (UNIX)
+
+set(CONAN_PACKAGE_LIST fmt/6.1.2 zlib/1.2.11 boost/1.75.0 gsl-lite/0.37.0 elfio/3.8)
+
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
      list(APPEND CONAN_BOOST_OPTIONS boost:fPIC=True)
      list(APPEND CONAN_PACKAGE_LIST tcc/0.9.27 seasocks/1.4.4)
@@ -70,9 +75,12 @@ conan_check()
 conan_add_remote(NAME minres URL https://artifactory.minres.com/artifactory/api/conan/oss)
 conan_cmake_configure(REQUIRES ${CONAN_PACKAGE_LIST}
                       GENERATORS cmake_find_package
-                      OPTIONS ${CONAN_PACKAGE_OPTIONS})
+                      OPTIONS ${CONAN_PACKAGE_OPTIONS}
+                      )
 conan_cmake_autodetect(settings)
-conan_install()                    
+conan_install()
+# needed when using CentOS devenv-7 or -8 and boost does not build because of missing GLIBCXX version                
+#conan_install(BUILD b2 missing)                    
 
 set(Boost_NO_BOOST_CMAKE ON) #  Don't do a find_package in config mode before searching for a regular boost install.
 #set(Boost_NO_SYSTEM_PATHS ON)
