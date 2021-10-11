@@ -13,7 +13,7 @@ and follow the instructions. After the build finished you can run
 
 ```
 
-src/tgc-vp -f ../fw/hello-world/prebuilt/hello.elf
+build/src/tgc-vp -f fw/hello-world/prebuilt/hello.elf
 
 ```
 
@@ -21,6 +21,7 @@ or use ctest:
 
 ```
 
+cd build
 ctest
 
 ```
