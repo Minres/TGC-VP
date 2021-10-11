@@ -132,7 +132,7 @@ if(NOT NO_FW_BUILD)
 endif()
 
 # CTest is a testing tool that can be used to test your project.
-# enable_testing()
-# add_test(NAME example
-#          WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/bin
-#          COMMAND example)
+ enable_testing()
+ add_test(NAME tgc-vp-hello-world
+          #WORKING_DIRECTORY ${ecosystem-vp_DIR}/bin
+          COMMAND tgc-vp -f ${CMAKE_CURRENT_LIST_DIR}/fw/hello-world/prebuilt/hello.elf)
