@@ -16,7 +16,7 @@
 					<folderInfo id="cdt.managedbuild.toolchain.gnu.base.1730410661.218663890" name="/" resourcePath="">
 						<toolChain id="cdt.managedbuild.toolchain.gnu.base.953157788" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.base">
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.GNU_ELF" id="cdt.managedbuild.target.gnu.platform.base.1034252621" name="Debug Platform" osList="linux,hpux,aix,qnx" superClass="cdt.managedbuild.target.gnu.platform.base"/>
-							<builder buildPath="/TGFS-VP/build/Debug" id="de.marw.cdt.cmake.core.genscriptbuilder.959296861" keepEnvironmentInBuildfile="false" name="CMake Builder" parallelBuildOn="false" superClass="de.marw.cdt.cmake.core.genscriptbuilder"/>
+							<builder buildPath="/TGFS-VP/build/Debug" id="de.marw.cdt.cmake.core.genscriptbuilder.959296861" keepEnvironmentInBuildfile="false" name="CMake Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="de.marw.cdt.cmake.core.genscriptbuilder"/>
 							<tool id="cdt.managedbuild.tool.gnu.archiver.base.519757762" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
 							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.1878089590" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base">
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.705150349" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
