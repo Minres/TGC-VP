@@ -29,7 +29,7 @@ if(ENABLE_SANITIZER)
   set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fsanitize=address")
 endif()
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-    add_compile_options(/vmg /wd26812) # suppress Warnung C26812: "enum class" gegen�ber "enum" (Enum.3) bevorzugen
+    add_compile_options(/vmg /wd26812) # suppress Warnung C26812: "enum class" gegenüber "enum" (Enum.3) bevorzugen
 endif()
 set(CONAN_BOOST_OPTIONS
 boost:header_only=False 
@@ -62,8 +62,8 @@ endif (UNIX)
 set(CONAN_PACKAGE_LIST fmt/6.1.2 zlib/1.2.11 boost/1.75.0 gsl-lite/0.37.0 elfio/3.8)
 
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
-     list(APPEND CONAN_BOOST_OPTIONS boost:fPIC=True)
-     list(APPEND CONAN_PACKAGE_LIST tcc/0.9.27 seasocks/1.4.4)
+     list(APPEND CONAN_BOOST_OPTIONS boost:fPIC=True lua:compile_as_cpp=False)
+     list(APPEND CONAN_PACKAGE_LIST tcc/0.9.27 seasocks/1.4.4 lua/5.4.3)
 endif()
 set(CONAN_PACKAGE_OPTIONS fmt:header_only=True ${CONAN_BOOST_OPTIONS})
 if(NOT USE_CWR_SYSTEMC AND NOT USE_NCSC_SYSTEMC AND NOT DEFINED ENV{SYSTEMC_HOME})
@@ -125,6 +125,9 @@ if(NOT USE_CWR_SYSTEMC)
 endif()
 if(NOT LIBS_ONLY)
 	add_subdirectory(src)
+endif()
+if(IS_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/plugins)
+	add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/plugins)
 endif()
 if(NOT NO_FW_BUILD)
 	add_custom_target(fw-hello-world ALL COMMAND make -C fw/hello-world
