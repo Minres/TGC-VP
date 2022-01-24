@@ -33,9 +33,7 @@ if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 endif()
 set(CONAN_BOOST_OPTIONS
 boost:header_only=False 
-boost:without_context=True
 boost:without_contract=True
-boost:without_coroutine=True
 boost:without_fiber=True
 boost:without_graph=True
 boost:without_graph_parallel=True
@@ -59,7 +57,7 @@ if (UNIX)
     list(APPEND CONAN_BOOST_OPTIONS boost:fPIC=True boost:shared=True)
 endif (UNIX)
 
-set(CONAN_PACKAGE_LIST fmt/6.1.2 zlib/1.2.11 boost/1.75.0 gsl-lite/0.37.0 elfio/3.8)
+set(CONAN_PACKAGE_LIST fmt/8.0.1 zlib/1.2.11 boost/1.75.0 gsl-lite/0.37.0 elfio/3.8)
 
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
      list(APPEND CONAN_BOOST_OPTIONS boost:fPIC=True lua:compile_as_cpp=False)
@@ -81,7 +79,10 @@ conan_cmake_autodetect(settings)
 conan_install()
 # needed when using CentOS devenv-7 or -8 and boost does not build because of missing GLIBCXX version                
 #conan_install(BUILD b2 missing)                    
-
+find_package(tcc)
+find_package(elfio)
+find_package(fmt)
+find_package(gsl-lite)
 set(Boost_NO_BOOST_CMAKE ON) #  Don't do a find_package in config mode before searching for a regular boost install.
 #set(Boost_NO_SYSTEM_PATHS ON)
 #set(Boost_USE_STATIC_LIBS OFF)
