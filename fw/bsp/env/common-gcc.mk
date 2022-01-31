@@ -24,7 +24,7 @@ INCLUDES += -I$(PLATFORM_DIR)
 
 TOOL_DIR ?= $(BSP_BASE)/../toolchain/bin/
 
-LDFLAGS += -T $(LINKER_SCRIPT) -nostartfiles
+LDFLAGS += -T $(LINKER_SCRIPT) -nostartfiles -Wl,-Map,firmware.map
 LDFLAGS += -L$(ENV_DIR) --specs=nano.specs
 
 ASM_OBJS := $(ASM_SRCS:.S=.o)
