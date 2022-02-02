@@ -8,3 +8,5 @@
 /*.vcd
 /.vs
 /out
+/coverage.info
+/output.txt
