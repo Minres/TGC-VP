@@ -13,4 +13,8 @@ tasks:
        cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON ..
        make -j
        cd ..
-       
+
+vscode:
+  extensions:
+    - ms-vscode.cmake-tools
+    - ms-python.python

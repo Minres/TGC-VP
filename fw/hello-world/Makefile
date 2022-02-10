@@ -2,7 +2,7 @@
 TARGET  = hello
 C_SRCS  = $(wildcard *.c) 
 HEADERS = $(wildcard *.h)
-CFLAGS += -O2 -g 
+CFLAGS += -O0 -g 
 
 BOARD=tgfs-vp
 LINK_TARGET=flash
