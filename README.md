@@ -29,7 +29,7 @@ ctest
 
 You will see on console the prints of the hello world firmware at fw/hello-world/hello.c
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/from-referrer)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/Minres/TGC-VP/tree/develop)
 
 ## Quick start
 

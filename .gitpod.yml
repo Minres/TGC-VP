@@ -2,19 +2,19 @@
 image: eyck/gitpod-riscv-tools:latest
         #  file: .gitpod.Dockerfile
 tasks:
-  - init: |
-       export CONAN_USER_HOME=/workspace/conan
+  - env: 
+      CONAN_USER_HOME: "/workspace/conan"
+    init: |
        python3 -m pip install --upgrade pip
-       python3 -m pip install conan
-       conan profile new default --detect --force
-       conan profile update settings.compiler.libcxx=libstdc++11 default
-       mkdir -p build
-       cd build
-       cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON ..
-       make -j
-       cd ..
-
+       python3 -m venv /workspace/venv
+       source /workspace/venv/bin/activate
+       pip install conan
+    command: |
+       source /workspace/venv/bin/activate
+       cmake -b build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON ..
+       cmake --build build 
 vscode:
   extensions:
     - ms-vscode.cmake-tools
     - ms-python.python
+    - webfreak.debug
