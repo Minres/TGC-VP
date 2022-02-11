@@ -5,13 +5,13 @@ tasks:
   - env: 
       CONAN_USER_HOME: "/workspace/conan"
     init: |
-       python3 -m pip install --upgrade pip
        python3 -m venv /workspace/venv
+       python3 -m pip install --upgrade pip
        source /workspace/venv/bin/activate
        pip install conan
     command: |
        source /workspace/venv/bin/activate
-       cmake -b build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON ..
+       cmake -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON
        cmake --build build 
 vscode:
   extensions:

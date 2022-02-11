@@ -13,7 +13,7 @@
             "remote": true,
             "cwd": "${workspaceRoot}",
             "valuesFormatting": "prettyPrinters",
-            "gdbpath": "/usr/local/bin/riscv32-unknown-elf-gdb",
+            "gdbpath": "/opt/riscv/bin/riscv32-unknown-elf-gdb",
             "debugger_args": [],
             "presentation": {
                 "hidden": true,
