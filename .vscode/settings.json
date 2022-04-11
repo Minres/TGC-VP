@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "platform.h": "c"
+    },
+    "debug.allowBreakpointsEverywhere": true
+}

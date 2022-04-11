@@ -1,0 +1,13 @@
+/build/
+/plugins/
+/.settings/
+*.o
+*.a
+*.lib
+/*.txlog
+/*.vcd
+/.vs
+/out
+/coverage.info
+/output.txt
+/output.trc

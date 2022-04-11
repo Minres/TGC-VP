@@ -1,0 +1,20 @@
+---
+# Commands to start on workspace startup
+image: stanka/gitpod-riscv-tools:latest
+#  file: .gitpod.Dockerfile
+tasks:
+  - env: 
+      CONAN_USER_HOME: "/workspace/conan"
+    init: |
+       python3 -m venv /workspace/venv
+       python3 -m pip install --upgrade pip
+       source /workspace/venv/bin/activate
+       pip install conan
+    command: |
+       source /workspace/venv/bin/activate
+       cmake -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON
+       cmake --build build 
+vscode:
+  extensions:
+    - ms-python.python
+    - webfreak.debug

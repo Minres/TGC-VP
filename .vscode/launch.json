@@ -1,0 +1,55 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "gdb",
+            "request": "attach",
+            "name": "Attach-to-gdbserver",
+            "executable": "./fw/hello-world/hello",
+            "target": ":10000",
+            "remote": true,
+            "cwd": "${workspaceRoot}",
+            "valuesFormatting": "prettyPrinters",
+            "gdbpath": "/opt/riscv/bin/riscv32-unknown-elf-gdb",
+            "debugger_args": [],
+            "presentation": {
+                "hidden": true,
+                "group": "FW Debug",
+                "order": 2
+            }
+        },
+        {
+            "type": "gdb",
+            "request": "launch",
+            "name": "Launch-VP-with-gdbserver",
+            "cwd": "${workspaceRoot}",
+            "valuesFormatting": "parseText",
+            "target": "./build/src/tgc-vp",
+            "arguments": "-f fw/hello-world/hello -g 10000",
+            "presentation": {
+                "hidden": true,
+                "group": "FW Debug",
+                "order": 1
+            }
+        },
+        {
+            "type": "gdb",
+            "request": "launch",
+            "name": "VP-Debug",
+            "cwd": "${workspaceRoot}",
+            "valuesFormatting": "parseText",
+            "target": "./build/src/tgc-vp",
+            "printCalls": false,
+            "arguments": "-f fw/hello-world/hello"
+        },
+    ],
+    "compounds": [
+        {
+            "name": "FW-Debug",
+            "configurations": ["Launch-VP-with-gdbserver", "Attach-to-gdbserver"]
+        }
+    ]
+}
