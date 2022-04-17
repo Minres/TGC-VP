@@ -84,10 +84,6 @@ find_package(elfio)
 find_package(fmt)
 find_package(gsl-lite)
 set(Boost_NO_BOOST_CMAKE ON) #  Don't do a find_package in config mode before searching for a regular boost install.
-#set(Boost_NO_SYSTEM_PATHS ON)
-#set(Boost_USE_STATIC_LIBS OFF)
-#set(Boost_USE_MULTITHREADED ON)
-#set(Boost_USE_STATIC_RUNTIME OFF)
 
 
 find_package(Boost REQUIRED COMPONENTS program_options QUIET)
@@ -127,16 +123,13 @@ endif()
 if(NOT LIBS_ONLY)
 	add_subdirectory(src)
 endif()
-if(IS_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/plugins)
-	add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/plugins)
-endif()
 if(NOT NO_FW_BUILD)
 	add_custom_target(fw-hello-world ALL COMMAND make -C fw/hello-world
                    USES_TERMINAL WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 endif()
 
 # CTest is a testing tool that can be used to test your project.
- enable_testing()
- add_test(NAME tgc-vp-hello-world
-          #WORKING_DIRECTORY ${ecosystem-vp_DIR}/bin
-          COMMAND tgc-vp -f ${CMAKE_CURRENT_LIST_DIR}/fw/hello-world/prebuilt/hello.elf)
+enable_testing()
+add_test(NAME tgc-vp-hello-world
+         #WORKING_DIRECTORY ${ecosystem-vp_DIR}/bin
+         COMMAND tgc-vp -f ${CMAKE_CURRENT_LIST_DIR}/fw/hello-world/prebuilt/hello.elf)
