@@ -16,8 +16,13 @@
 
 #include <boost/program_options.hpp>
 #include <tgc_vp/tb.h>
+#include <iostream>
 #include <fstream>
 #include <sstream>
+#ifdef ERROR
+#undef ERROR
+#endif
+
 const std::string core_path{"tb.top.core_complex"};
 
 using namespace sysc;

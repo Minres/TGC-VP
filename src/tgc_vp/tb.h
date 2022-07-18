@@ -21,7 +21,9 @@ public:
     tgc_vp::rst_gen rst_gen{"rst_gen"};
     sc_core::sc_vector<tlm::scc::tlm_signal<sc_dt::sc_logic>> gpio_s{"gpio_s", 32};
     sc_core::sc_signal<bool> rst_n{"rst_n"};
+#ifndef WIN32 // Seasocks not available under windows
     vpvper::generic::terminal terminal{"terminal"};
+#endif
 };
 
 } /* namespace tgc_vp */
