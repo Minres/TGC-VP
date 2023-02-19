@@ -70,7 +70,7 @@ if(NOT USE_CWR_SYSTEMC AND NOT USE_NCSC_SYSTEMC AND NOT DEFINED ENV{SYSTEMC_HOME
 endif()
 
 conan_check() 
-conan_add_remote(NAME minres URL https://artifactory.minres.com/artifactory/api/conan/oss)
+conan_add_remote(NAME minres URL https://git.minres.com/api/packages/Tooling/conan)
 conan_cmake_configure(REQUIRES ${CONAN_PACKAGE_LIST}
                       GENERATORS cmake_find_package
                       OPTIONS ${CONAN_PACKAGE_OPTIONS}
