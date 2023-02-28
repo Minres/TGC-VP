@@ -78,22 +78,23 @@ if(NOT USE_CWR_SYSTEMC AND NOT USE_NCSC_SYSTEMC AND NOT DEFINED ENV{SYSTEMC_HOME
 endif()
 
 conan_check() 
-conan_add_remote(NAME minres URL https://artifactory.minres.com/artifactory/api/conan/oss)
+conan_add_remote(NAME minres URL https://git.minres.com/api/packages/Tooling/conan)
 conan_cmake_configure(REQUIRES ${CONAN_PACKAGE_LIST}
                       GENERATORS cmake_find_package
                       OPTIONS ${CONAN_PACKAGE_OPTIONS}
                       )
 conan_cmake_autodetect(settings)
-conan_install()
 # needed when using CentOS devenv-7 or -8 and boost does not build because of missing GLIBCXX version                
-#conan_install(BUILD b2 missing)                    
+#conan_install(BUILD b2 missing)    
+conan_install()
+
+set(CONAN_CMAKE_SILENT_OUTPUT ON)               
 find_package(tcc QUIET)
 find_package(elfio)
 find_package(fmt)
 find_package(spdlog)
 find_package(gsl-lite)
 set(Boost_NO_BOOST_CMAKE ON) #  Don't do a find_package in config mode before searching for a regular boost install.
-
 
 find_package(Boost REQUIRED COMPONENTS program_options QUIET)
 
