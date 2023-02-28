@@ -77,7 +77,7 @@ system::system(sc_core::sc_module_name nm)
 
     core_complex.sw_irq_i(msie_int_s);
     core_complex.timer_irq_i(mtime_int_s);
-    core_complex.global_irq_i(core_int_s);
+    core_complex.ext_irq_i(core_int_s);
     core_complex.local_irq_i(local_int_s);
 
     pins_i(gpio0.pins_i);

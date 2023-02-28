@@ -57,7 +57,15 @@ if (UNIX)
     list(APPEND CONAN_BOOST_OPTIONS boost:fPIC=True boost:shared=True)
 endif (UNIX)
 
-set(CONAN_PACKAGE_LIST fmt/8.0.1 zlib/1.2.11 boost/1.75.0 gsl-lite/0.37.0 elfio/3.8)
+set(CONAN_PACKAGE_LIST 
+	fmt/8.0.1
+	spdlog/1.9.2
+	boost/1.75.0
+	gsl-lite/0.37.0
+	elfio/3.8
+	yaml-cpp/0.7.0 
+    jsoncpp/1.9.5 
+)
 
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
      list(APPEND CONAN_BOOST_OPTIONS boost:fPIC=True lua:compile_as_cpp=False)
@@ -82,6 +90,7 @@ conan_install()
 find_package(tcc QUIET)
 find_package(elfio)
 find_package(fmt)
+find_package(spdlog)
 find_package(gsl-lite)
 set(Boost_NO_BOOST_CMAKE ON) #  Don't do a find_package in config mode before searching for a regular boost install.
 
