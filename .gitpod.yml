@@ -9,7 +9,7 @@ tasks:
        python3 -m venv /workspace/venv
        python3 -m pip install --upgrade pip
        source /workspace/venv/bin/activate
-       pip install conan
+       pip install conan==1.59
     command: |
        source /workspace/venv/bin/activate
        cmake -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON
@@ -18,3 +18,5 @@ vscode:
   extensions:
     - ms-python.python
     - webfreak.debug
+    - twxs.cmake
+    - ms-vscode.cmake-tools
