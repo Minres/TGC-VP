@@ -65,9 +65,6 @@ private:
     sc_core::sc_vector<sc_core::sc_signal<bool, sc_core::SC_MANY_WRITERS>> global_int_s{"global_int_s", 256}, local_int_s{"local_int_s", 16};
     sc_core::sc_signal<bool, sc_core::SC_MANY_WRITERS> core_int_s{"core_int_s"};
     
-    sc_core::sc_vector<tlm::scc::tlm_signal_bool_opt_in> s_dummy_sck_i{"s_dummy_sck_i", 16};
-    sc_core::sc_vector<tlm::scc::tlm_signal_bool_opt_out> s_dummy_sck_o{"s_dummy_sck_o", 16};
-
 protected:
     void gen_reset();
     vpvper::sifive::spi& qspi0;

@@ -97,8 +97,8 @@ system::system(sc_core::sc_module_name nm)
     qspi1.irq_o(global_int_s[6]);
     qspi2.irq_o(global_int_s[7]);
 
-    s_dummy_sck_i[0](uart1.tx_o);
-    uart1.rx_i(s_dummy_sck_o[0]);
+    gpio0.iof0_i[16](uart1.tx_o);
+    uart1.rx_i(gpio0.iof0_o[17]);
     uart1.irq_o(global_int_s[4]);
 
     gpio0.iof1_i[0](pwm0.cmpgpio_o[0]);
@@ -130,8 +130,6 @@ system::system(sc_core::sc_module_name nm)
     pwm2.cmpip_o[1](global_int_s[49]);
     pwm2.cmpip_o[2](global_int_s[50]);
     pwm2.cmpip_o[3](global_int_s[51]);
-
-    for (auto &sock : s_dummy_sck_i) sock.error_if_no_callback = false;
 }
 
 } /* namespace sysc */
