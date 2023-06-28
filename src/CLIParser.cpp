@@ -76,6 +76,8 @@ void CLIParser::build() {
                     "enable gdb server and specify port to use")
             ("dump-ir",
                     "dump the intermediate representation")
+			("dump-structure", po::value<std::string>(),
+					"dump model structure to ELK file")
             ("quantum", po::value<unsigned>(),
                     "SystemC quantum time in ns")
             ("reset,r", po::value<std::string>(),

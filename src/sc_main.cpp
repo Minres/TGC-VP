@@ -9,6 +9,7 @@
 
 #include <scc/configurable_tracer.h>
 #include <scc/configurer.h>
+#include <scc/hierarchy_dumper.h>
 #include <scc/report.h>
 #include <scc/scv/scv_tr_db.h>
 #include <scc/tracer.h>
@@ -78,6 +79,9 @@ int sc_main(int argc, char *argv[]) {
         if (of.is_open()) cfg.dump_configuration(of);
     }
     cfg.configure();
+    std::unique_ptr<scc::hierarchy_dumper> dumper;
+    if(parser.is_set("dump-structure"))
+        dumper.reset(new scc::hierarchy_dumper(parser.get<std::string>("dump-structure"), scc::hierarchy_dumper::D3JSON));
     ///////////////////////////////////////////////////////////////////////////
     // overwrite config with command line settings
     ///////////////////////////////////////////////////////////////////////////
