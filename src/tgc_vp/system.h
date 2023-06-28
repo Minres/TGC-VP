@@ -52,9 +52,9 @@ private:
     vpvper::sifive::prci prci{"prci"};
     vpvper::sifive::clint clint{"clint"};
 
-    using mem_qspi_t = scc::memory<512_MB, 32>;
+    using mem_qspi_t = scc::memory<512_MB, scc::LT>;
     mem_qspi_t mem_qspi{"mem_qspi"};
-    using mem_ram_t = scc::memory<128_kB, 32>;
+    using mem_ram_t = scc::memory<128_kB, scc::LT>;
     mem_ram_t mem_ram{"mem_ram"};
 
     sc_core::sc_signal<sc_core::sc_time, sc_core::SC_MANY_WRITERS> tlclk_s{"tlclk_s"};

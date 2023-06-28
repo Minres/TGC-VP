@@ -12,6 +12,7 @@ option(EN_EXT_DEBUG "Enable extended debug output at runtime" OFF)
 option(ENABLE_COVERAGE "Enable code coverage" OFF)
 option(ENABLE_SANITIZER "Enable address sanitizer" OFF)
 option(ENABLE_CLANGTIDY "Enable static analysis with clang-tidy." OFF)
+option(ENABLE_TCC "Enable the use of TCC" ON)
 
 set(SCC_LIB_ONLY ON)
 set(CMAKE_CXX_STANDARD 14)
@@ -67,9 +68,12 @@ set(CONAN_PACKAGE_LIST
     jsoncpp/1.9.5 
 )
 
-if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux" AND ENABLE_TCC)
      list(APPEND CONAN_BOOST_OPTIONS boost:fPIC=True lua:compile_as_cpp=False)
-     list(APPEND CONAN_PACKAGE_LIST tcc/0.9.27 seasocks/1.4.4 lua/5.4.3)
+     if(ENABLE_TCC)
+	 list(APPEND CONAN_PACKAGE_LIST tcc/0.9.27)
+     endif()
+     list(APPEND CONAN_PACKAGE_LIST seasocks/1.4.4 lua/5.4.3)
 endif()
 set(CONAN_PACKAGE_OPTIONS fmt:header_only=True ${CONAN_BOOST_OPTIONS})
 if(NOT USE_CWR_SYSTEMC AND NOT USE_NCSC_SYSTEMC AND NOT DEFINED ENV{SYSTEMC_HOME})

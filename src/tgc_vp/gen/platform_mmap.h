@@ -7,7 +7,7 @@
 #define _PLATFORM_MMAP_H_
 // need double braces, see
 // https://stackoverflow.com/questions/6893700/how-to-construct-stdarray-object-with-initializer-list#6894191
-const std::array<scc::target_memory_map_entry<32>, 13> platfrom_mmap = {{
+const std::array<scc::target_memory_map_entry<>, 13> platfrom_mmap = {{
     {clint.socket, 0x2000000, 0xc000},
     {plic.socket, 0xc000000, 0x200008},
     {aon.socket, 0x10000000, 0x150},
