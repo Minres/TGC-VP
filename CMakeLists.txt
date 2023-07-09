@@ -70,18 +70,19 @@ set(CONAN_PACKAGE_LIST
 	boost/1.75.0
 	gsl-lite/0.37.0
 	elfio/3.8
-	tcc/0.9.27
 	lz4/1.9.3 
 	yaml-cpp/0.7.0 
     jsoncpp/1.9.5 
 )
-
-if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux" AND ENABLE_TCC)
-	list(APPEND CONAN_PACKAGE_LIST tcc/0.9.27)
+set(CONAN_PACKAGE_OPTIONS fmt:header_only=True ${CONAN_BOOST_OPTIONS})
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+    list(APPEND CONAN_PACKAGE_LIST seasocks/1.4.4 lua/5.4.3)
+	list(APPEND CONAN_PACKAGE_OPTIONS lua:compile_as_cpp=False )
+    if(ENABLE_TCC)
+	    list(APPEND CONAN_PACKAGE_LIST tcc/0.9.27)
+    endif()
 endif()
-list(APPEND CONAN_PACKAGE_LIST seasocks/1.4.4 lua/5.4.3)
-set(CONAN_PACKAGE_OPTIONS fmt:header_only=True lua:compile_as_cpp=False ${CONAN_BOOST_OPTIONS})
-
+ 
 if(NOT USE_CWR_SYSTEMC AND NOT USE_NCSC_SYSTEMC AND NOT DEFINED ENV{SYSTEMC_HOME})
 	set(CONAN_PACKAGE_LIST ${CONAN_PACKAGE_LIST}
 	    systemc/2.3.3
