@@ -46,11 +46,11 @@
 					<def name="BUILD_SHARED_LIBS" type="STRING" val="ON"/>
 				</defs>
 			</storageModule>
-			<storageModule buildDir="build/${ConfigName}" dirtyTs="1687934527300" moduleId="de.marw.cmake4eclipse.mbs.settings">
+			<storageModule buildDir="build/${ConfigName}" dirtyTs="1689326163013" moduleId="de.marw.cmake4eclipse.mbs.settings">
 				<options/>
 				<defs>
 					<def name="CMAKE_BUILD_TYPE" type="STRING" val="Debug"/>
-					<def name="ENABLE_TCC" type="STRING" val="OFF"/>
+					<def name="USE_CWR_SYSTEMC" type="BOOL" val="OFF"/>
 				</defs>
 			</storageModule>
 		</cconfiguration>
@@ -106,6 +106,7 @@
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Debug-PA"/>
 		<configuration configurationName="Default">
 			<resource resourceType="PROJECT" workspacePath="/TGFS-VP"/>
 		</configuration>
