@@ -10,12 +10,16 @@
 #include <iss/log_categories.h>
 #include <scc/report.h>
 #include <stdexcept>
+#include <unordered_set>
 #ifdef ERROR
 #undef ERROR
 #endif
 namespace po = boost::program_options;
 using namespace sc_core;
 
+namespace {
+std::unordered_set<std::string> backend_opts = {"interp", "tcc"};
+}
 CLIParser::CLIParser(int argc, char *argv[])
 : desc("Options")
 , valid(false) {
@@ -28,9 +32,12 @@ CLIParser::CLIParser(int argc, char *argv[])
         }
         po::notify(vm_); // throws on error, so do after help in case there are any problems
         valid = true;
+        if(backend_opts.find(vm_["backend"].as<std::string>())== std::end(backend_opts))
+            throw po::error("Illegal value for switch backend");
     } catch (po::error &e) {
         std::cerr << "ERROR: " << e.what() << std::endl << std::endl;
         std::cerr << desc << std::endl;
+        exit(-1);
     }
     auto log_level = vm_["verbose"].as<scc::log>();
     auto log_level_num = static_cast<unsigned>(log_level);
@@ -74,6 +81,8 @@ void CLIParser::build() {
                     "ELF file to load")
             ("gdb-port,g", po::value<unsigned short>()->default_value(0),
                     "enable gdb server and specify port to use")
+            ("backend", po::value<std::string>()->default_value("interp"),
+                    "the ISS backend to use, options are: interp, tcc")
             ("dump-ir",
                     "dump the intermediate representation")
 			("dump-structure", po::value<std::string>(),

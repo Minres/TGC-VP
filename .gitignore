@@ -13,3 +13,5 @@
 /output.trc
 CMakeSettings.json
 /.venv
+/src-gen/
+/*.json

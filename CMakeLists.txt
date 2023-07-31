@@ -10,7 +10,6 @@ option(EN_EXT_DEBUG "Enable extended debug output at runtime" OFF)
 option(ENABLE_COVERAGE "Enable code coverage" OFF)
 option(ENABLE_SANITIZER "Enable address sanitizer" OFF)
 option(ENABLE_CLANGTIDY "Enable static analysis with clang-tidy." OFF)
-option(ENABLE_TCC "Enable the use of TCC" ON)
 
 set(SCC_LIB_ONLY ON)
 set(CMAKE_CXX_STANDARD 14)
@@ -63,7 +62,7 @@ boost:without_type_erasure=True
 boost:without_wave=True
 )
 
-set(B2_VERSION 4.9.3)
+set(B2_VERSION 4.9.6)
 set(CONAN_PACKAGE_LIST 
 	fmt/8.0.1
 	spdlog/1.9.2
@@ -76,13 +75,19 @@ set(CONAN_PACKAGE_LIST
 )
 set(CONAN_PACKAGE_OPTIONS fmt:header_only=True ${CONAN_BOOST_OPTIONS})
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
-    list(APPEND CONAN_PACKAGE_LIST seasocks/1.4.4 lua/5.4.3)
+    list(APPEND CONAN_PACKAGE_LIST seasocks/1.4.4 tcc/0.9.27)
 	list(APPEND CONAN_PACKAGE_OPTIONS lua:compile_as_cpp=False )
-    if(ENABLE_TCC)
-	    list(APPEND CONAN_PACKAGE_LIST tcc/0.9.27)
-    endif()
+    set(WITH_TCC ON)
 endif()
- 
+if(WITH_LLVM)
+    list(APPEND CONAN_PACKAGE_LIST llvm-core/13.0.0)
+	list(APPEND CONAN_PACKAGE_OPTIONS libiconv:shared=True)
+endif()
+if(IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/tgc-iss/dbt-rise-plugins)
+     list(APPEND CONAN_PACKAGE_OPTIONS lua:compile_as_cpp=False)
+     list(APPEND CONAN_PACKAGE_LIST lua/5.4.3)
+endif()
+
 if(NOT USE_CWR_SYSTEMC AND NOT USE_NCSC_SYSTEMC AND NOT DEFINED ENV{SYSTEMC_HOME})
 	set(CONAN_PACKAGE_LIST ${CONAN_PACKAGE_LIST}
 	    systemc/2.3.3
@@ -153,9 +158,12 @@ endif ()
 add_subdirectory(scc)
 add_subdirectory(tgc-iss/dbt-rise-core)
 add_subdirectory(tgc-iss/dbt-rise-tgc)
-#if(NOT USE_CWR_SYSTEMC)
+if(IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/tgc-iss//dbt-rise-plugins)
+	add_subdirectory(tgc-iss/dbt-rise-plugins)
+endif()
+if(NOT USE_CWR_SYSTEMC)
 	add_subdirectory(vpvper)
-#endif()
+endif()
 if(NOT LIBS_ONLY)
 	add_subdirectory(src)
 endif()
