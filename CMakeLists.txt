@@ -5,7 +5,7 @@ project(ecosystem-vp LANGUAGES C CXX VERSION 1.0.0)
 
 option(ENABLE_SCV "Enable the use of SCV" ON)
 option(LIBS_ONLY "Just build the shared libraries needed to build the VP" OFF)
-option(FW_BUILD "Enable the automatic rebuild of firmware running on the VP" OFF)
+option(FW_BUILD "Enable the automatic download and build of some firmware to run on the VP" OFF)
 option(EN_EXT_DEBUG "Enable extended debug output at runtime" OFF)
 option(ENABLE_COVERAGE "Enable code coverage" OFF)
 option(ENABLE_SANITIZER "Enable address sanitizer" OFF)
@@ -77,7 +77,7 @@ set(CONAN_PACKAGE_OPTIONS fmt:header_only=True ${CONAN_BOOST_OPTIONS})
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     list(APPEND CONAN_PACKAGE_LIST seasocks/1.4.4 tcc/0.9.27)
 	list(APPEND CONAN_PACKAGE_OPTIONS lua:compile_as_cpp=False )
-    set(WITH_TCC ON)
+	option(WITH_TCC "Build TCC backend" ON)
 endif()
 if(WITH_LLVM)
     list(APPEND CONAN_PACKAGE_LIST llvm-core/13.0.0)
@@ -167,9 +167,20 @@ endif()
 if(NOT LIBS_ONLY)
 	add_subdirectory(src)
 endif()
+
 if(FW_BUILD)
-	add_custom_target(fw-hello-world ALL COMMAND make -C fw/hello-world
-                   USES_TERMINAL WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+	include(FetchContent)
+	set(FETCHCONTENT_BASE_DIR ${CMAKE_CURRENT_BINARY_DIR}/..)
+	FetchContent_Declare(
+	  	riscvfw
+	  	GIT_REPOSITORY https://git.minres.com/VP/Firmwares.git
+	  	GIT_TAG        main
+	)
+	FetchContent_GetProperties(riscvfw)
+	if(NOT riscvfw_POPULATED)
+	  	FetchContent_Populate(riscvfw)
+	  	add_subdirectory(${riscvfw_SOURCE_DIR})
+	endif()
 endif()
 
 # CTest is a testing tool that can be used to test your project.
