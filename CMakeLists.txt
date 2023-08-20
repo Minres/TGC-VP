@@ -179,8 +179,8 @@ if(FW_BUILD)
 	FetchContent_GetProperties(riscvfw)
 	if(NOT riscvfw_POPULATED)
 	  	FetchContent_Populate(riscvfw)
-	  	add_subdirectory(${riscvfw_SOURCE_DIR})
 	endif()
+ 	add_subdirectory(${riscvfw_SOURCE_DIR})
 endif()
 
 # CTest is a testing tool that can be used to test your project.
