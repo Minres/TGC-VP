@@ -26,3 +26,11 @@ if(TARGET Boost::program_options)
 else()
 	target_link_libraries(${PROJECT_NAME} PUBLIC ${BOOST_program_options_LIBRARY})
 endif()
+install(TARGETS ${PROJECT_NAME}
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}  # static lib
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}  # binaries
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}  # shared lib
+  FRAMEWORK DESTINATION ${CMAKE_INSTALL_LIBDIR} # for mac
+  PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}  # headers for mac (note the different component -> different package)
+  INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}             # headers
+)
