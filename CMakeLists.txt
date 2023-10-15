@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/scc/cmake)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/scc/cmake)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/tgc-iss/dbt-rise-tgc/cmake/)
 
 project(ecosystem-vp LANGUAGES C CXX VERSION 1.0.0)
 
@@ -10,6 +11,7 @@ option(EN_EXT_DEBUG "Enable extended debug output at runtime" OFF)
 option(ENABLE_COVERAGE "Enable code coverage" OFF)
 option(ENABLE_SANITIZER "Enable address sanitizer" OFF)
 option(ENABLE_CLANGTIDY "Enable static analysis with clang-tidy." OFF)
+option(WITH_TCC "Build TCC backend" ON)
 
 set(SCC_LIB_ONLY ON)
 set(CMAKE_CXX_STANDARD 14)
@@ -71,13 +73,12 @@ set(CONAN_PACKAGE_LIST
 	elfio/3.8
 	lz4/1.9.3 
 	yaml-cpp/0.7.0 
-    jsoncpp/1.9.5 
+	jsoncpp/1.9.5 
 )
 set(CONAN_PACKAGE_OPTIONS fmt:header_only=True ${CONAN_BOOST_OPTIONS})
-if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux" AND WITH_TCC)
     list(APPEND CONAN_PACKAGE_LIST seasocks/1.4.4 tcc/0.9.27)
 	list(APPEND CONAN_PACKAGE_OPTIONS lua:compile_as_cpp=False )
-	option(WITH_TCC "Build TCC backend" ON)
 endif()
 if(WITH_LLVM)
     list(APPEND CONAN_PACKAGE_LIST llvm-core/13.0.0)
@@ -126,6 +127,7 @@ find_package(elfio)
 find_package(fmt)
 find_package(spdlog)
 find_package(gsl-lite)
+find_package(yaml-cpp)
 set(Boost_NO_BOOST_CMAKE ON) #  Don't do a find_package in config mode before searching for a regular boost install.
 find_package(Boost REQUIRED COMPONENTS program_options QUIET)
 
