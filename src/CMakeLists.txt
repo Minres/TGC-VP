@@ -10,8 +10,9 @@ include(flink)
 
 find_package(Boost COMPONENTS program_options thread REQUIRED)
 ###############################################################################
-# SiFive
+# TGC
 ###############################################################################
+set(CMAKE_INSTALL_RPATH $ORIGIN/../${CMAKE_INSTALL_LIBDIR})
 add_executable(${PROJECT_NAME}
 	sc_main.cpp
 	CLIParser.cpp
@@ -26,6 +27,7 @@ if(TARGET Boost::program_options)
 else()
 	target_link_libraries(${PROJECT_NAME} PUBLIC ${BOOST_program_options_LIBRARY})
 endif()
+
 install(TARGETS ${PROJECT_NAME}
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}  # static lib
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}  # binaries
