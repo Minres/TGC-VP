@@ -177,6 +177,8 @@ if(FW_BUILD)
 	  	riscvfw
 	  	GIT_REPOSITORY https://git.minres.com/VP/Firmwares.git
 	  	GIT_TAG        main
+	  	GIT_SHALLOW OFF
+	  	UPDATE_DISCONNECTED ON
 	)
 	FetchContent_GetProperties(riscvfw)
 	if(NOT riscvfw_POPULATED)
