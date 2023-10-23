@@ -18,7 +18,7 @@ namespace po = boost::program_options;
 using namespace sc_core;
 
 namespace {
-std::unordered_set<std::string> backend_opts = {"interp", "tcc"};
+std::unordered_set<std::string> backend_opts = {"interp", "tcc", "asmjit"};
 }
 CLIParser::CLIParser(int argc, char *argv[])
 : desc("Options")

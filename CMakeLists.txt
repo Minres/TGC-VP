@@ -12,6 +12,8 @@ option(ENABLE_COVERAGE "Enable code coverage" OFF)
 option(ENABLE_SANITIZER "Enable address sanitizer" OFF)
 option(ENABLE_CLANGTIDY "Enable static analysis with clang-tidy." OFF)
 option(WITH_TCC "Build TCC backend" ON)
+option(WITH_LLVM "Build LLVM backend" OFF)
+option(WITH_ASMJIT "Build ASMJIT backend" ON)
 
 set(SCC_LIB_ONLY ON)
 set(CMAKE_CXX_STANDARD 14)
