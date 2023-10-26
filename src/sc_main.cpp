@@ -14,6 +14,9 @@
 #include <scc/scv/scv_tr_db.h>
 #include <scc/tracer.h>
 #include <scc/perf_estimator.h>
+#ifdef WITH_LLVM
+#include <iss/llvm/jit_helper.h>
+#endif
 
 #include <boost/program_options.hpp>
 #include <tgc_vp/tb.h>
@@ -47,6 +50,12 @@ int sc_main(int argc, char *argv[]) {
     if (!parser.is_valid()) return ERRORR_IN_COMMAND_LINE;
     scc::stream_redirection cout_redir(std::cout, scc::log::INFO);
     scc::stream_redirection cerr_redir(std::cerr, scc::log::ERROR);
+    ///////////////////////////////////////////////////////////////////////////
+    // set up infrastructure
+    ///////////////////////////////////////////////////////////////////////////
+#ifdef WITH_LLVM
+    iss::init_jit_debug(argc, argv);
+#endif
     ///////////////////////////////////////////////////////////////////////////
     // create the performance estimation module
     ///////////////////////////////////////////////////////////////////////////

@@ -75,7 +75,8 @@ set(CONAN_PACKAGE_LIST
 	elfio/3.8
 	lz4/1.9.3 
 	yaml-cpp/0.7.0 
-	jsoncpp/1.9.5 
+	jsoncpp/1.9.5
+	zlib/1.2.13
 )
 set(CONAN_PACKAGE_OPTIONS fmt:header_only=True ${CONAN_BOOST_OPTIONS})
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux" AND WITH_TCC)
@@ -84,7 +85,7 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux" AND WITH_TCC)
 endif()
 if(WITH_LLVM)
     list(APPEND CONAN_PACKAGE_LIST llvm-core/13.0.0)
-	list(APPEND CONAN_PACKAGE_OPTIONS libiconv:shared=True)
+	list(APPEND CONAN_PACKAGE_OPTIONS libiconv:shared=False)
 endif()
 if(WITH_ASMJIT)
     list(APPEND CONAN_PACKAGE_LIST asmjit/cci.20230325)
@@ -190,6 +191,7 @@ if(FW_BUILD)
 	if(NOT riscvfw_POPULATED)
 	  	FetchContent_Populate(riscvfw)
 	endif()
+	set(BOARD tgc-vp)
  	add_subdirectory(${riscvfw_SOURCE_DIR})
 endif()
 
