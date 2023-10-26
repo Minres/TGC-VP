@@ -195,6 +195,8 @@ if(FW_BUILD)
  	add_subdirectory(${riscvfw_SOURCE_DIR})
 endif()
 
+install(FILES ${CMAKE_CURRENT_LIST_DIR}/fw/hello-world/prebuilt/hello.elf DESTINATION share/tgc-vp)
+
 # CTest is a testing tool that can be used to test your project.
 enable_testing()
 add_test(NAME tgc-vp-hello-world
