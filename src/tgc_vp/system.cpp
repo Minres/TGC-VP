@@ -52,6 +52,8 @@ system::system(sc_core::sc_module_name nm)
     clint.tlclk_i(tlclk_s);
     clint.lfclk_i(lfclk_s);
     core_complex.clk_i(tlclk_s);
+    mem_qspi.clk_i(tlclk_s);
+    mem_ram.clk_i(tlclk_s);
 
     uart0.rst_i(rst_s);
     uart1.rst_i(rst_s);

@@ -85,7 +85,7 @@ int sc_main(int argc, char *argv[]) {
     ///////////////////////////////////////////////////////////////////////////
     if (parser.get<std::string>("dump-config").size() > 0) {
         std::ofstream of{parser.get<std::string>("dump-config")};
-        if (of.is_open()) cfg.dump_configuration(of);
+        if (of.is_open()) cfg.dump_configuration(of, true);
     }
     cfg.configure();
     std::unique_ptr<scc::hierarchy_dumper> dumper;
