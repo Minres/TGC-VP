@@ -4,8 +4,11 @@
 *.o
 *.a
 *.lib
+/*.log
 /*.txlog
 /*.vcd
+/*.ftr
+/*.fst
 /.vs
 /out
 /coverage.info

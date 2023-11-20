@@ -137,6 +137,7 @@ find_package(gsl-lite)
 find_package(yaml-cpp)
 set(Boost_NO_BOOST_CMAKE ON) #  Don't do a find_package in config mode before searching for a regular boost install.
 find_package(Boost REQUIRED COMPONENTS program_options QUIET)
+include(SystemCPackage)
 
 set(CLANG_FORMAT_EXCLUDE_PATTERNS "scc")
 find_package(ClangFormat)
