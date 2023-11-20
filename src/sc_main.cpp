@@ -74,8 +74,8 @@ int sc_main(int argc, char *argv[]) {
         auto enable_sig_trace = (trace_level&0x1) != 0;// bit0 enables sig trace
         auto tx_trace_type = static_cast<scc::tracer::file_type>(trace_level >> 1); // bit3-bit1 define the kind of transaction trace
         auto trace_default_on = parser.is_set("trace-default-on");
-        cfg.set_value("*.tx_trace_type", static_cast<unsigned>(scc::tracer::file_type::FTR));
-        cfg.set_value("*.sig_trace_type", static_cast<unsigned>(scc::tracer::file_type::SC_VCD));
+        cfg.set_value("$$$scc_tracer$$$.tx_trace_type", static_cast<unsigned>(scc::tracer::file_type::FTR));
+        cfg.set_value("$$$scc_tracer$$$.sig_trace_type", static_cast<unsigned>(scc::tracer::file_type::SC_VCD));
         tracer = scc::make_unique<scc::configurable_tracer>(file_name, tx_trace_type, enable_sig_trace, trace_default_on);
     }
     ///////////////////////////////////////////////////////////////////////////
