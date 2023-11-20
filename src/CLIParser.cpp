@@ -94,7 +94,7 @@ void CLIParser::build() {
             ("reset,r", po::value<std::string>(),
                     "reset address")
             ("trace-level,t", po::value<unsigned>()->default_value(0),
-                    "enable tracing, or combination of 1=signals and 2=TX text, 4=TX compressed text, 6=TX in SQLite")
+                    "enable tracing, or combination of 1=signals and 2=TX")
             ("trace-default-on",
                     "enables tracing for all unspecified modules")
             ("trace-file", po::value<std::string>()->default_value("system"),
