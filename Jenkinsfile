@@ -39,11 +39,10 @@ void build_tgc_vp() {
     catch (exc) {
         echo 'Conan configured'
     }
-    sh("rm -rf TGC-VP/build")
-    sh("mkdir -p TGC-VP/build")
-    sh("cd TGC-VP && git submodule update --recursive")
-    sh("cmake -S . -B build  && cmake --build build -j16")
-    fingerprint 'TGC-VP/build/src/tgc-vp'
+    sh("rm -rf build")
+    sh("git submodule update --recursive")
+    sh("cmake -S . -B build  -DWITH_TCC=OFF && cmake --build build -j16")
+    fingerprint 'build/src/tgc-vp'
 }
 
 pipeline {
