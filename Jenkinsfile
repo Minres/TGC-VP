@@ -7,6 +7,7 @@ def getBranch() {
 }
 
 void checkout_tgc_vp() {
+	sh("rm -rf *")
     checkout([
         $class: 'GitSCM',
         branches: [
