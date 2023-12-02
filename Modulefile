@@ -14,3 +14,4 @@ if { $distro == "CentOS" && ![info exists ::env(PROJECT)] && ![info exists ::env
 
 module load tools/gcc-riscv32-unknown-elf/11
 module load tools/cmake
+module load tools/utilities
