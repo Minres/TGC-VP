@@ -56,7 +56,7 @@ pipeline {
     }
 
     stages {
-        stage('tgc-VP pipeline') {
+        stage('TGC-VP pipeline') {
            parallel {
 	            stage('ubuntu20'){
 	                agent {docker { image 'ubuntu-20.04' } }
