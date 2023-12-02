@@ -10,12 +10,16 @@
 #include <iss/log_categories.h>
 #include <scc/report.h>
 #include <stdexcept>
+#include <unordered_set>
 #ifdef ERROR
 #undef ERROR
 #endif
 namespace po = boost::program_options;
 using namespace sc_core;
 
+namespace {
+std::unordered_set<std::string> backend_opts = {"interp", "tcc", "llvm", "asmjit"};
+}
 CLIParser::CLIParser(int argc, char *argv[])
 : desc("Options")
 , valid(false) {
@@ -24,13 +28,16 @@ CLIParser::CLIParser(int argc, char *argv[])
         po::store(po::parse_command_line(argc, argv, desc), vm_); // can throw
         // --help option
         if (vm_.count("help")) {
-            std::cout << "DBT-RISE-RiscV simulator for RISC-V" << std::endl << desc << std::endl;
+            std::cout << "DBT-RISE-TGC based virtual platform of TGC cores" << std::endl << desc << std::endl;
         }
         po::notify(vm_); // throws on error, so do after help in case there are any problems
         valid = true;
+        if(backend_opts.find(vm_["backend"].as<std::string>())== std::end(backend_opts))
+            throw po::error("Illegal value for switch backend");
     } catch (po::error &e) {
         std::cerr << "ERROR: " << e.what() << std::endl << std::endl;
         std::cerr << desc << std::endl;
+        exit(-1);
     }
     auto log_level = vm_["verbose"].as<scc::log>();
     auto log_level_num = static_cast<unsigned>(log_level);
@@ -74,14 +81,20 @@ void CLIParser::build() {
                     "ELF file to load")
             ("gdb-port,g", po::value<unsigned short>()->default_value(0),
                     "enable gdb server and specify port to use")
+            ("backend", po::value<std::string>()->default_value("interp"),
+                    "the ISS backend to use, options are: interp, tcc")
+            ("isa", po::value<std::string>()->default_value("tgc5c"),
+                    "core or isa name to use for simulation, use '?' to get list")
             ("dump-ir",
                     "dump the intermediate representation")
+			("dump-structure", po::value<std::string>(),
+					"dump model structure to ELK file")
             ("quantum", po::value<unsigned>(),
                     "SystemC quantum time in ns")
             ("reset,r", po::value<std::string>(),
                     "reset address")
             ("trace-level,t", po::value<unsigned>()->default_value(0),
-                    "enable tracing, or combination of 1=signals and 2=TX text, 4=TX compressed text, 6=TX in SQLite")
+                    "enable tracing, or combination of 1=signals and 2=TX")
             ("trace-default-on",
                     "enables tracing for all unspecified modules")
             ("trace-file", po::value<std::string>()->default_value("system"),

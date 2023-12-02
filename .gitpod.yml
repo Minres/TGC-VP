@@ -18,3 +18,5 @@ vscode:
   extensions:
     - ms-python.python
     - webfreak.debug
+    - twxs.cmake
+    - ms-vscode.cmake-tools

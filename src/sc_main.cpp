@@ -9,15 +9,24 @@
 
 #include <scc/configurable_tracer.h>
 #include <scc/configurer.h>
+#include <scc/hierarchy_dumper.h>
 #include <scc/report.h>
 #include <scc/scv/scv_tr_db.h>
 #include <scc/tracer.h>
 #include <scc/perf_estimator.h>
+#ifdef WITH_LLVM
+#include <iss/llvm/jit_helper.h>
+#endif
 
 #include <boost/program_options.hpp>
 #include <tgc_vp/tb.h>
+#include <iostream>
 #include <fstream>
 #include <sstream>
+#ifdef ERROR
+#undef ERROR
+#endif
+
 const std::string core_path{"tb.top.core_complex"};
 
 using namespace sysc;
@@ -42,6 +51,12 @@ int sc_main(int argc, char *argv[]) {
     scc::stream_redirection cout_redir(std::cout, scc::log::INFO);
     scc::stream_redirection cerr_redir(std::cerr, scc::log::ERROR);
     ///////////////////////////////////////////////////////////////////////////
+    // set up infrastructure
+    ///////////////////////////////////////////////////////////////////////////
+#ifdef WITH_LLVM
+    iss::init_jit_debug(argc, argv);
+#endif
+    ///////////////////////////////////////////////////////////////////////////
     // create the performance estimation module
     ///////////////////////////////////////////////////////////////////////////
     scc::perf_estimator estimator;
@@ -52,11 +67,17 @@ int sc_main(int argc, char *argv[]) {
     ///////////////////////////////////////////////////////////////////////////
     // set up tracing & transaction recording
     ///////////////////////////////////////////////////////////////////////////
-    auto trace_level = parser.get<unsigned>("trace-level");
-    scc::configurable_tracer trace(parser.get<std::string>("trace-file"),
-            static_cast<scc::tracer::file_type>(trace_level >> 1), // bit3-bit1 define the kind of transaction trace
-            (trace_level&0x1) != 0, // bit0 enables vcd
-            parser.is_set("trace-default-on"));
+
+    std::unique_ptr<scc::configurable_tracer> tracer;
+    if( auto trace_level = parser.get<unsigned>("trace-level")) {
+        auto file_name = parser.get<std::string>("trace-file");
+        auto enable_sig_trace = (trace_level&0x1) != 0;// bit0 enables sig trace
+        auto tx_trace_type = static_cast<scc::tracer::file_type>(trace_level >> 1); // bit3-bit1 define the kind of transaction trace
+        auto trace_default_on = parser.is_set("trace-default-on");
+        cfg.set_value("$$$scc_tracer$$$.tx_trace_type", static_cast<unsigned>(scc::tracer::file_type::FTR));
+        cfg.set_value("$$$scc_tracer$$$.sig_trace_type", static_cast<unsigned>(scc::tracer::file_type::SC_VCD));
+        tracer = scc::make_unique<scc::configurable_tracer>(file_name, tx_trace_type, enable_sig_trace, trace_default_on);
+    }
     ///////////////////////////////////////////////////////////////////////////
     // instantiate top level
     ///////////////////////////////////////////////////////////////////////////
@@ -64,20 +85,25 @@ int sc_main(int argc, char *argv[]) {
     ///////////////////////////////////////////////////////////////////////////
     // add non-implemented 'enableTracing' properties
     ///////////////////////////////////////////////////////////////////////////
-    trace.add_control();
+    if(tracer) tracer->add_control();
     ///////////////////////////////////////////////////////////////////////////
     // dump configuration if requested
     ///////////////////////////////////////////////////////////////////////////
     if (parser.get<std::string>("dump-config").size() > 0) {
         std::ofstream of{parser.get<std::string>("dump-config")};
-        if (of.is_open()) cfg.dump_configuration(of);
+        if (of.is_open()) cfg.dump_configuration(of, true);
     }
     cfg.configure();
+    std::unique_ptr<scc::hierarchy_dumper> dumper;
+    if(parser.is_set("dump-structure"))
+        dumper.reset(new scc::hierarchy_dumper(parser.get<std::string>("dump-structure"), scc::hierarchy_dumper::D3JSON));
     ///////////////////////////////////////////////////////////////////////////
     // overwrite config with command line settings
     ///////////////////////////////////////////////////////////////////////////
     cfg.set_value(core_path + ".gdb_server_port", parser.get<unsigned short>("gdb-port"));
     cfg.set_value(core_path + ".dump_ir", parser.is_set("dump-ir"));
+    cfg.set_value(core_path + ".backend", parser.get<std::string>("backend"));
+    cfg.set_value(core_path + ".core_type", parser.get<std::string>("isa"));
     if(parser.is_set("plugin")){
         auto plugins = util::join(parser.get<std::vector<std::string>>("plugin"),",");
         cfg.set_value(core_path + ".plugins", plugins);

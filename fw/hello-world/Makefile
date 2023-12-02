@@ -13,6 +13,5 @@ LDFLAGS := -march=$(RISCV_ARCH) -mabi=$(RISCV_ABI)
 compiler := $(shell which riscv32-unknown-elf-gcc)
 TOOL_DIR=$(dir $(compiler))
 
-TRIPLET=riscv32-unknown-elf
 BSP_BASE = ../bsp
 include $(BSP_BASE)/env/common-gcc.mk
