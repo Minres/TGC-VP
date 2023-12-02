@@ -72,13 +72,6 @@ pipeline {
 	                    stage('Build') { steps {    build_tgc_vp() }    }
 	                }
 	            }
-	            stage('Fedora28'){
-	                agent {docker { image 'fedora28' } }
-	                stages {
-	                    stage('Checkout on Fedora') { steps {checkout_tgc_vp()}}
-	                    stage('Build') { steps {build_tgc_vp()    }}
-	                }
-	            }
 	            stage('CentOS7'){
 	                agent {docker { image 'centos7' } }
 	                stages {
