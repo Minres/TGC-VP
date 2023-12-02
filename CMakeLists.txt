@@ -66,7 +66,6 @@ boost:without_type_erasure=True
 boost:without_wave=True
 )
 
-set(B2_VERSION 4.9.6)
 set(CONAN_PACKAGE_LIST 
 	fmt/8.0.1
 	spdlog/1.9.2
@@ -114,12 +113,13 @@ conan_check()
 conan_add_remote(NAME minres URL https://git.minres.com/api/packages/Tooling/conan)
 # Boost on CentOS 7 quirks: the b2 of conan-center is build against a newer libstdc++ and therefore does not run
 # with the oooooold libs on CentOS 7. Therefore we build our own version of b2 if it is not there
-set(B2_META $ENV{HOME}/.conan/data/b2/${B2_VERSION}/_/_/metadata.json)
+execute_process(COMMAND bash -c "conan search -r all b2 | tail -1" OUTPUT_VARIABLE B2_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
+set(B2_META $ENV{HOME}/.conan/data/${B2_VERSION}/_/_/metadata.json)
 if(DEFINED ENV{CONAN_USER_HOME})
-	set(B2_META $ENV{CONAN_USER_HOME}/.conan/data/b2/${B2_VERSION}/_/_/metadata.json)
+	set(B2_META $ENV{CONAN_USER_HOME}/.conan/data/${B2_VERSION}/_/_/metadata.json)
 endif()
 if(NOT EXISTS ${B2_META})
-	conan_configure(REQUIRES b2/${B2_VERSION})
+	conan_configure(REQUIRES ${B2_VERSION})
 	conan_cmake_autodetect(settings)
 	conan_cmake_install(PATH_OR_REFERENCE . BUILD b2 SETTINGS ${settings})
 endif()

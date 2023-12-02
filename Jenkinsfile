@@ -87,7 +87,7 @@ pipeline {
                 }
             }
             stage('RockyLinux8'){
-                agent {docker { image 'rocky8' } }
+                agent {docker { image 'rockylinux8' } }
                 stages {
                     stage('Checkout on Ubuntu') { steps {checkout_tgc_vp()}}
                     stage('Build') { steps {build_tgc_vp()}
