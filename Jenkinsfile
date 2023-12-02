@@ -34,7 +34,7 @@ void build_tgc_vp() {
         sh("conan profile new default --detect --force")
         sh("conan profile update settings.compiler.libcxx=libstdc++11 default")
         sh("conan remote add minres https://git.minres.com/api/packages/Tooling/conan --force")
-        sh("cmake --version")
+        sh("conan --version && cmake --version")
     }
     catch (exc) {
         echo 'Conan configured'
@@ -80,6 +80,14 @@ pipeline {
             }
             stage('CentOS7'){
                 agent {docker { image 'centos7' } }
+                stages {
+                    stage('Checkout on Ubuntu') { steps {checkout_tgc_vp()}}
+                    stage('Build') { steps {build_tgc_vp()}
+                    }
+                }
+            }
+            stage('RockyLinux8'){
+                agent {docker { image 'rocky8' } }
                 stages {
                     stage('Checkout on Ubuntu') { steps {checkout_tgc_vp()}}
                     stage('Build') { steps {build_tgc_vp()}
