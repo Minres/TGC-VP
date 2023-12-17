@@ -7,6 +7,7 @@ def getBranch() {
 }
 
 void checkout_tgc_vp() {
+	sh("rm -rf *")
     checkout([
         $class: 'GitSCM',
         branches: [
@@ -55,46 +56,54 @@ pipeline {
     }
 
     stages {
-        stage('tgc-VP pipeline') {
+        stage('TGC-VP pipeline') {
            parallel {
-            stage('ubuntu20'){
-                agent {docker { image 'ubuntu-20.04' } }
-                stages {
-                    stage('Checkout on Ubuntu20.04') { steps {    checkout_tgc_vp() }}
-                    stage('Build') { steps {    build_tgc_vp() }    }
-                }
-            }
-            stage('ubuntu22'){
-                agent {docker { image 'ubuntu-22.04' } }
-                stages {
-                    stage('Checkout on Ubuntu22.04') { steps {    checkout_tgc_vp() }}
-                    stage('Build') { steps {    build_tgc_vp() }    }
-                }
-            }
-            stage('Fedora28'){
-                agent {docker { image 'fedora28' } }
-                stages {
-                    stage('Checkout on Fedora') { steps {checkout_tgc_vp()}}
-                    stage('Build') { steps {build_tgc_vp()    }}
-                }
-            }
-            stage('CentOS7'){
-                agent {docker { image 'centos7' } }
-                stages {
-                    stage('Checkout on Ubuntu') { steps {checkout_tgc_vp()}}
-                    stage('Build') { steps {build_tgc_vp()}
-                    }
-                }
-            }
-            stage('RockyLinux8'){
-                agent {docker { image 'rockylinux8' } }
-                stages {
-                    stage('Checkout on Ubuntu') { steps {checkout_tgc_vp()}}
-                    stage('Build') { steps {build_tgc_vp()}
-                    }
-                }
-            }
-         }
+	            stage('ubuntu20'){
+	                agent {docker { image 'ubuntu-20.04' } }
+	                stages {
+	                    stage('Checkout on Ubuntu20.04') { steps {    checkout_tgc_vp() }}
+	                    stage('Build') { steps {    build_tgc_vp() }    }
+	                }
+	            }
+	            stage('ubuntu22'){
+	                agent {docker { image 'ubuntu-22.04' } }
+	                stages {
+	                    stage('Checkout on Ubuntu22.04') { steps {    checkout_tgc_vp() }}
+	                    stage('Build') { steps {    build_tgc_vp() }    }
+	                }
+	            }
+	            stage('CentOS7'){
+	                agent {docker { image 'centos7' } }
+	                stages {
+	                    stage('Checkout on Ubuntu') { steps {checkout_tgc_vp()}}
+	                    stage('Build') { steps {build_tgc_vp()}
+	                    }
+	                }
+	            }
+	            stage('RockyLinux8'){
+	                agent {docker { image 'rockylinux8' } }
+	                stages {
+	                    stage('Checkout on Ubuntu') { steps {checkout_tgc_vp()}}
+	                    stage('Build') { steps {build_tgc_vp()}
+	                    }
+	                }
+	            }
+         	}
+        }
+    }
+    post {
+        success {
+            rocketSend ":thumbsup: TGC-VP verification run passed, results at ${env.RUN_DISPLAY_URL} " 
+        }
+        failure {
+            archiveArtifacts artifacts: 'failed_seeds_*.txt', followSymlinks: false, onlyIfSuccessful: false 
+            rocketSend ":thumbsdown: TGC-VP verification failed, please check ${env.RUN_DISPLAY_URL} " 
+            emailext recipientProviders: [culprits(), requestor()],
+                subject: "TGC-VP Pipeline Failed: ${currentBuild.fullDisplayName}",
+                body: """
+                <p>Build Status: ${currentBuild.currentResult}</p>
+                <p> Check logs at <a href='${env.BUILD_URL}console'> Build Console Logs </a> or at <a href='${env.RUN_DISPLAY_URL}'> Overview </a></p>
+                """
         }
     }
 }
