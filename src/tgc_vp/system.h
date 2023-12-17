@@ -52,9 +52,9 @@ private:
     vpvper::sifive::prci prci{"prci"};
     vpvper::sifive::clint clint{"clint"};
 
-    using mem_qspi_t = scc::memory<512_MB, 32>;
+    using mem_qspi_t = scc::memory<512_MB, scc::LT>;
     mem_qspi_t mem_qspi{"mem_qspi"};
-    using mem_ram_t = scc::memory<128_kB, 32>;
+    using mem_ram_t = scc::memory<128_kB, scc::LT>;
     mem_ram_t mem_ram{"mem_ram"};
 
     sc_core::sc_signal<sc_core::sc_time, sc_core::SC_MANY_WRITERS> tlclk_s{"tlclk_s"};
@@ -65,9 +65,6 @@ private:
     sc_core::sc_vector<sc_core::sc_signal<bool, sc_core::SC_MANY_WRITERS>> global_int_s{"global_int_s", 256}, local_int_s{"local_int_s", 16};
     sc_core::sc_signal<bool, sc_core::SC_MANY_WRITERS> core_int_s{"core_int_s"};
     
-    sc_core::sc_vector<tlm::scc::tlm_signal_bool_opt_in> s_dummy_sck_i{"s_dummy_sck_i", 16};
-    sc_core::sc_vector<tlm::scc::tlm_signal_bool_opt_out> s_dummy_sck_o{"s_dummy_sck_o", 16};
-
 protected:
     void gen_reset();
     vpvper::sifive::spi& qspi0;

@@ -13,7 +13,7 @@ using namespace sysc::tgfs;
 
 system::system(sc_core::sc_module_name nm)
 : sc_core::sc_module(nm)
-, NAMED(router,  platfrom_mmap.size() + 2, 1)
+, NAMED(router,  platfrom_mmap.size() + 2, 2)
 , NAMEDC(qspi0_ptr, spi, spi_impl::beh)
 , NAMEDC(qspi1_ptr, spi, spi_impl::beh)
 , NAMEDC(qspi2_ptr, spi, spi_impl::beh)
@@ -24,7 +24,8 @@ system::system(sc_core::sc_module_name nm)
     auto& qspi0 = *qspi0_ptr;
     auto& qspi1 = *qspi1_ptr;
     auto& qspi2 = *qspi2_ptr;
-    core_complex.initiator(router.target[0]);
+    core_complex.ibus(router.target[0]);
+    core_complex.dbus(router.target[1]);
     size_t i = 0;
     for (const auto &e : platfrom_mmap) {
         router.initiator.at(i)(e.target);
@@ -51,6 +52,8 @@ system::system(sc_core::sc_module_name nm)
     clint.tlclk_i(tlclk_s);
     clint.lfclk_i(lfclk_s);
     core_complex.clk_i(tlclk_s);
+    mem_qspi.clk_i(tlclk_s);
+    mem_ram.clk_i(tlclk_s);
 
     uart0.rst_i(rst_s);
     uart1.rst_i(rst_s);
@@ -77,7 +80,7 @@ system::system(sc_core::sc_module_name nm)
 
     core_complex.sw_irq_i(msie_int_s);
     core_complex.timer_irq_i(mtime_int_s);
-    core_complex.global_irq_i(core_int_s);
+    core_complex.ext_irq_i(core_int_s);
     core_complex.local_irq_i(local_int_s);
 
     pins_i(gpio0.pins_i);
@@ -96,8 +99,8 @@ system::system(sc_core::sc_module_name nm)
     qspi1.irq_o(global_int_s[6]);
     qspi2.irq_o(global_int_s[7]);
 
-    s_dummy_sck_i[0](uart1.tx_o);
-    uart1.rx_i(s_dummy_sck_o[0]);
+    gpio0.iof0_i[16](uart1.tx_o);
+    uart1.rx_i(gpio0.iof0_o[17]);
     uart1.irq_o(global_int_s[4]);
 
     gpio0.iof1_i[0](pwm0.cmpgpio_o[0]);
@@ -129,8 +132,6 @@ system::system(sc_core::sc_module_name nm)
     pwm2.cmpip_o[1](global_int_s[49]);
     pwm2.cmpip_o[2](global_int_s[50]);
     pwm2.cmpip_o[3](global_int_s[51]);
-
-    for (auto &sock : s_dummy_sck_i) sock.error_if_no_callback = false;
 }
 
 } /* namespace sysc */
