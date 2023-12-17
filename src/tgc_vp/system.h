@@ -44,7 +44,7 @@ private:
     scc::router<> router;
     vpvper::sifive::uart_terminal uart0{"uart0"};
     vpvper::sifive::uart  uart1{"uart1"};
-    std::unique_ptr<vpvper::sifive::spi> qspi0_ptr, qspi1_ptr, qspi2_ptr;
+    vpvper::sifive::spi qspi0{"qspi0"}, qspi1{"qspi1"}, qspi2{"qspi2"};
     vpvper::sifive::pwm pwm0{"pwm0"}, pwm1{"pwm1"}, pwm2{"pwm2"};
     vpvper::sifive::gpio gpio0{"gpio0"};
     vpvper::sifive::plic plic{"plic"};
@@ -65,11 +65,7 @@ private:
     sc_core::sc_vector<sc_core::sc_signal<bool, sc_core::SC_MANY_WRITERS>> global_int_s{"global_int_s", 256}, local_int_s{"local_int_s", 16};
     sc_core::sc_signal<bool, sc_core::SC_MANY_WRITERS> core_int_s{"core_int_s"};
     
-protected:
     void gen_reset();
-    vpvper::sifive::spi& qspi0;
-    vpvper::sifive::spi& qspi1;
-    vpvper::sifive::spi& qspi2;
 #include "tgc_vp/gen/platform_mmap.h"
 };
 

@@ -14,16 +14,7 @@ using namespace sysc::tgfs;
 system::system(sc_core::sc_module_name nm)
 : sc_core::sc_module(nm)
 , NAMED(router,  platfrom_mmap.size() + 2, 2)
-, NAMEDC(qspi0_ptr, spi, spi_impl::beh)
-, NAMEDC(qspi1_ptr, spi, spi_impl::beh)
-, NAMEDC(qspi2_ptr, spi, spi_impl::beh)
-, qspi0(*qspi0_ptr)
-, qspi1(*qspi1_ptr)
-, qspi2(*qspi2_ptr)
 {
-    auto& qspi0 = *qspi0_ptr;
-    auto& qspi1 = *qspi1_ptr;
-    auto& qspi2 = *qspi2_ptr;
     core_complex.ibus(router.target[0]);
     core_complex.dbus(router.target[1]);
     size_t i = 0;
