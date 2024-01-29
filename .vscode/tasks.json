@@ -4,7 +4,7 @@
 		{
 			"label": "CMake-and-make",
 			"type": "shell",
-			"command": "source /workspace/venv/bin/activate && cmake -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON && cmake --build build",
+			"command": "source .venv/bin/activate && cmake -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON && cmake --build build",
 			"problemMatcher": [],
 			"presentation": {
 				"echo": true,
