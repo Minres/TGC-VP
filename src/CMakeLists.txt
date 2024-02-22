@@ -21,7 +21,7 @@ add_executable(${PROJECT_NAME}
 )
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_LIST_DIR})
 target_force_link_libraries(${PROJECT_NAME} PUBLIC dbt-rise-tgc_sc)
-target_link_libraries(${PROJECT_NAME} PUBLIC vpvper_generic vpvper_sifive ${BOOST_program_options_LIBRARY})
+target_link_libraries(${PROJECT_NAME} PUBLIC vpvper_generic vpvper_minres ${BOOST_program_options_LIBRARY})
 if(TARGET Boost::program_options)
 	target_link_libraries(${PROJECT_NAME} PUBLIC Boost::program_options Boost::thread)
 else()
