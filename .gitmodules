@@ -10,3 +10,6 @@
 [submodule "tgc-iss/dbt-rise-tgc"]
 	path = tgc-iss/dbt-rise-tgc
 	url = https://git.minres.com/DBT-RISE/DBT-RISE-TGC.git
+[submodule "fw/bsp"]
+	path = fw/bsp
+	url = https://git.minres.com/Firmware/MNRS-BM-BSP.git
