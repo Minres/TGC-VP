@@ -12,6 +12,6 @@ if { $distro == "CentOS" && ![info exists ::env(PROJECT)] && ![info exists ::env
     puts stderr     "Don't forget to execute 'scl enable devtoolset-7 llvm-toolset-7 bash'"
 }
 
-module load tools/gcc-riscv32-unknown-elf/11
+module load tools/gcc-riscv64-unknown-elf/13
 module load tools/cmake
 module load tools/utilities
