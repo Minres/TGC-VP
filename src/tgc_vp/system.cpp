@@ -23,7 +23,7 @@ system::system(sc_core::sc_module_name nm)
 
     ahb_router.initiator.at(0)(qspi.xip_sck);
     ahb_router.set_target_range(0, 0xE0000000, 16_MB);
-    ahb_router.initiator.at(1)(mem_ram.target);
+    ahb_router.initiator.at(1)(main_ram.target);
     ahb_router.set_target_range(1, 0x80000000, 32_kB);
     ahb_router.initiator.at(2)(apbBridge.target[0]);
     ahb_router.set_target_range(2, 0xF0000000, 256_MB);
@@ -41,8 +41,9 @@ system::system(sc_core::sc_module_name nm)
     aclint.clk_i(clk_i);
     irq_ctrl.clk_i(clk_i);
     qspi.clk_i(clk_i);
+    boot_rom.clk_i(clk_i);
     core_complex.clk_i(clk_i);
-    //mem_ram.clk_i(clk_i);
+    main_ram.clk_i(clk_i);
 
     gpio0.rst_i(rst_s);
     uart0.rst_i(rst_s);
@@ -86,9 +87,7 @@ system::system(sc_core::sc_module_name nm)
     sensitive << erst_n;
 }
 void system::gen_reset(){
-    if(erst_n.read())
-        rst_s = 0;
-    else rst_s = 1;
+    rst_s = !erst_n.read();
 }
 
 

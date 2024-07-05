@@ -61,8 +61,8 @@ private:
     vpvper::minres::irq_tl irq_ctrl{"irq_ctrl"};
     vpvper::minres::qspi_tl qspi{"qspi"};
 
-    //scc::memory<1_kB, scc::LT> bootloader{"bootloader"};
-    scc::memory<32_kB, scc::LT> mem_ram {"mem_ram"};
+    scc::memory<1_kB, scc::LT> boot_rom{"boot_rom"};
+    scc::memory<32_kB, scc::LT> main_ram {"main_ram"};
    
     sc_core::sc_signal<bool, sc_core::SC_MANY_WRITERS> rst_s{"rst_s"}, mtime_int_s{"mtime_int_s"}, msip_int_s{"msip_int_s"};
     
