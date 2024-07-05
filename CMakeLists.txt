@@ -80,9 +80,6 @@ set(CONAN_PACKAGE_LIST
 set(CONAN_PACKAGE_OPTIONS fmt:header_only=True ${CONAN_BOOST_OPTIONS})
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux" AND WITH_TCC)
     list(APPEND CONAN_PACKAGE_LIST seasocks/1.4.4)
-    if(WITH_TCC)
-    	list(APPEND CONAN_PACKAGE_LIST tcc/0.9.27)
-   	endif()
 	list(APPEND CONAN_PACKAGE_OPTIONS lua:compile_as_cpp=False )
 endif()
 if(WITH_LLVM)
@@ -90,7 +87,7 @@ if(WITH_LLVM)
 	list(APPEND CONAN_PACKAGE_OPTIONS libiconv:shared=False)
 endif()
 if(WITH_ASMJIT)
-    list(APPEND CONAN_PACKAGE_LIST asmjit/cci.20230325)
+    list(APPEND CONAN_PACKAGE_LIST asmjit/cci.20240531)
     list(APPEND CONAN_PACKAGE_OPTIONS asmjit:shared=False)
 endif()
 if(IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/tgc-iss/dbt-rise-plugins)
@@ -100,12 +97,9 @@ endif()
 
 if(NOT USE_CWR_SYSTEMC AND NOT USE_NCSC_SYSTEMC AND NOT DEFINED ENV{SYSTEMC_HOME})
 	set(CONAN_PACKAGE_LIST ${CONAN_PACKAGE_LIST}
-	    systemc/2.3.3
-	    systemc-cci/1.0.0
-	    ) 
+	    systemc/2.3.4) 
 	set(CONAN_PACKAGE_OPTIONS ${CONAN_PACKAGE_OPTIONS}
 	    systemc:shared=${SHARED_FLAG}
-	    systemc-cci:shared=${SHARED_FLAG}
 	    systemc:disable_virtual_bind=False)
 endif()
 
@@ -195,7 +189,7 @@ if(FW_BUILD)
 	if(NOT riscvfw_POPULATED)
 	  	FetchContent_Populate(riscvfw)
 	endif()
-	set(BOARD tgc-vp)
+	set(BOARD tgc_vp)
  	add_subdirectory(${riscvfw_SOURCE_DIR})
 endif()
 

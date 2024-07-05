@@ -19,5 +19,5 @@ CMakeSettings.json
 /src-gen/
 /*.json
 /cfg.yaml
-/.direnv
-/.cache
+/.direnv/
+/.envrc.eyck
