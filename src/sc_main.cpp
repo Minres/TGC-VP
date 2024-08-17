@@ -10,19 +10,19 @@
 #include <scc/configurable_tracer.h>
 #include <scc/configurer.h>
 #include <scc/hierarchy_dumper.h>
+#include <scc/perf_estimator.h>
 #include <scc/report.h>
 #include <scc/scv/scv_tr_db.h>
 #include <scc/tracer.h>
-#include <scc/perf_estimator.h>
 #ifdef WITH_LLVM
 #include <iss/llvm/jit_helper.h>
 #endif
 
 #include <boost/program_options.hpp>
-#include <tgc_vp/tb.h>
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <sstream>
+#include <tgc_vp/tb.h>
 #ifdef ERROR
 #undef ERROR
 #endif
@@ -38,7 +38,7 @@ const size_t ERRORR_IN_COMMAND_LINE = 1;
 const size_t SUCCESS = 0;
 } // namespace
 
-int sc_main(int argc, char *argv[]) {
+int sc_main(int argc, char* argv[]) {
     ///////////////////////////////////////////////////////////////////////////
     // SystemC >=2.2 got picky about multiple drivers so disable check
     ///////////////////////////////////////////////////////////////////////////
@@ -47,7 +47,8 @@ int sc_main(int argc, char *argv[]) {
     // CLI argument parsing & logging setup
     ///////////////////////////////////////////////////////////////////////////
     CLIParser parser(argc, argv);
-    if (!parser.is_valid()) return ERRORR_IN_COMMAND_LINE;
+    if(!parser.is_valid())
+        return ERRORR_IN_COMMAND_LINE;
     scc::stream_redirection cout_redir(std::cout, scc::log::INFO);
     scc::stream_redirection cerr_redir(std::cerr, scc::log::ERROR);
     ///////////////////////////////////////////////////////////////////////////
@@ -69,14 +70,16 @@ int sc_main(int argc, char *argv[]) {
     ///////////////////////////////////////////////////////////////////////////
 
     std::unique_ptr<scc::configurable_tracer> tracer;
-    if( auto trace_level = parser.get<unsigned>("trace-level")) {
+    if(auto trace_level = parser.get<unsigned>("trace-level")) {
         auto file_name = parser.get<std::string>("trace-file");
-        auto enable_sig_trace = (trace_level&0x1) != 0;// bit0 enables sig trace
-        auto tx_trace_type = static_cast<scc::tracer::file_type>(trace_level >> 1); // bit3-bit1 define the kind of transaction trace
+        auto enable_sig_trace = (trace_level & 0x1) != 0; // bit0 enables sig trace
+        auto tx_trace_type =
+            static_cast<scc::tracer::file_type>(trace_level >> 1); // bit3-bit1 define the kind of transaction trace
         auto trace_default_on = parser.is_set("trace-default-on");
         cfg.set_value("$$$scc_tracer$$$.tx_trace_type", static_cast<unsigned>(scc::tracer::file_type::FTR));
         cfg.set_value("$$$scc_tracer$$$.sig_trace_type", static_cast<unsigned>(scc::tracer::file_type::FST));
-        tracer = scc::make_unique<scc::configurable_tracer>(file_name, tx_trace_type, enable_sig_trace, trace_default_on);
+        tracer =
+            scc::make_unique<scc::configurable_tracer>(file_name, tx_trace_type, enable_sig_trace, trace_default_on);
     }
     ///////////////////////////////////////////////////////////////////////////
     // instantiate top level
@@ -85,18 +88,21 @@ int sc_main(int argc, char *argv[]) {
     ///////////////////////////////////////////////////////////////////////////
     // add non-implemented 'enableTracing' properties
     ///////////////////////////////////////////////////////////////////////////
-    if(tracer) tracer->add_control();
+    if(tracer)
+        tracer->add_control();
     ///////////////////////////////////////////////////////////////////////////
     // dump configuration if requested
     ///////////////////////////////////////////////////////////////////////////
-    if (parser.get<std::string>("dump-config").size() > 0) {
+    if(parser.get<std::string>("dump-config").size() > 0) {
         std::ofstream of{parser.get<std::string>("dump-config")};
-        if (of.is_open()) cfg.dump_configuration(of, true);
+        if(of.is_open())
+            cfg.dump_configuration(of, true);
     }
     cfg.configure();
     std::unique_ptr<scc::hierarchy_dumper> dumper;
     if(parser.is_set("dump-structure"))
-        dumper.reset(new scc::hierarchy_dumper(parser.get<std::string>("dump-structure"), scc::hierarchy_dumper::D3JSON));
+        dumper.reset(
+            new scc::hierarchy_dumper(parser.get<std::string>("dump-structure"), scc::hierarchy_dumper::D3JSON));
     ///////////////////////////////////////////////////////////////////////////
     // overwrite config with command line settings
     ///////////////////////////////////////////////////////////////////////////
@@ -104,23 +110,25 @@ int sc_main(int argc, char *argv[]) {
     cfg.set_value(core_path + ".dump_ir", parser.is_set("dump-ir"));
     cfg.set_value(core_path + ".backend", parser.get<std::string>("backend"));
     cfg.set_value(core_path + ".core_type", parser.get<std::string>("isa"));
-    if(parser.is_set("plugin")){
-        auto plugins = util::join(parser.get<std::vector<std::string>>("plugin"),",");
+    if(parser.is_set("plugin")) {
+        auto plugins = util::join(parser.get<std::vector<std::string>>("plugin"), ",");
         cfg.set_value(core_path + ".plugins", plugins);
     }
-    if (parser.is_set("elf")) cfg.set_value(core_path + ".elf_file", parser.get<std::string>("elf"));
-    if (parser.is_set("quantum"))
+    if(parser.is_set("elf"))
+        cfg.set_value(core_path + ".elf_file", parser.get<std::string>("elf"));
+    if(parser.is_set("quantum"))
         tlm::tlm_global_quantum::instance().set(sc_core::sc_time(parser.get<unsigned>("quantum"), sc_core::SC_NS));
-    if (parser.is_set("reset")) {
+    if(parser.is_set("reset")) {
         auto str = parser.get<std::string>("reset");
-        uint64_t start_address = str.find("0x") == 0 ? std::stoull(str.substr(2), nullptr, 16) : std::stoull(str, nullptr, 10);
+        uint64_t start_address =
+            str.find("0x") == 0 ? std::stoull(str.substr(2), nullptr, 16) : std::stoull(str, nullptr, 10);
         cfg.set_value(core_path + ".reset_address", start_address);
     }
-    if (parser.is_set("disass")) {
+    if(parser.is_set("disass")) {
         cfg.set_value(core_path + ".enable_disass", true);
         LOGGER(disass)::reporting_level() = logging::INFO;
         auto file_name = parser.get<std::string>("disass");
-        if (file_name.length() > 0) {
+        if(file_name.length() > 0) {
             LOG_OUTPUT(disass)::stream() = fopen(file_name.c_str(), "w");
             LOGGER(disass)::print_time() = false;
             LOGGER(disass)::print_severity() = false;
@@ -130,12 +138,13 @@ int sc_main(int argc, char *argv[]) {
     // run simulation
     ///////////////////////////////////////////////////////////////////////////
     try {
-        if (parser.is_set("max_time")) {
+        if(parser.is_set("max_time")) {
             sc_core::sc_start(scc::parse_from_string(parser.get<std::string>("max_time")));
         } else
             sc_core::sc_start();
-        if (!sc_core::sc_end_of_simulation_invoked()) sc_core::sc_stop();
-    } catch (sc_core::sc_report &rep) {
+        if(!sc_core::sc_end_of_simulation_invoked())
+            sc_core::sc_stop();
+    } catch(sc_core::sc_report& rep) {
         sc_core::sc_report_handler::get_handler()(rep, sc_core::SC_DISPLAY | sc_core::SC_STOP);
     }
     return 0;

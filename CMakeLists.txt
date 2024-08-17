@@ -104,7 +104,7 @@ if(NOT USE_CWR_SYSTEMC AND NOT USE_NCSC_SYSTEMC AND NOT DEFINED ENV{SYSTEMC_HOME
 endif()
 
 conan_check()
-conan_add_remote(NAME minres URL https://git.minres.com/api/packages/Tooling/conan)
+#conan_add_remote(NAME minres URL https://git.minres.com/api/packages/Tooling/conan)
 # Boost on CentOS 7 quirks: the b2 of conan-center is build against a newer libstdc++ and therefore does not run
 # with the oooooold libs on CentOS 7. Therefore we build our own version of b2 if it is not there
 execute_process(COMMAND bash -c "conan search -r all b2 | tail -1" OUTPUT_VARIABLE B2_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
@@ -136,7 +136,7 @@ set(Boost_NO_BOOST_CMAKE ON) #  Don't do a find_package in config mode before se
 find_package(Boost REQUIRED COMPONENTS program_options QUIET)
 include(SystemCPackage)
 
-set(CLANG_FORMAT_EXCLUDE_PATTERNS "scc")
+set(CLANG_FORMAT_EXCLUDE_PATTERNS scc build)
 find_package(ClangFormat)
 
 if(ENABLE_COVERAGE)

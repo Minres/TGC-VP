@@ -5,7 +5,6 @@
  */
 
 #include "CLIParser.h"
-#include <scc/report.h>
 #include <iostream>
 #include <iss/log_categories.h>
 #include <scc/report.h>
@@ -20,31 +19,34 @@ using namespace sc_core;
 namespace {
 std::unordered_set<std::string> backend_opts = {"interp", "tcc", "llvm", "asmjit"};
 }
-CLIParser::CLIParser(int argc, char *argv[])
+CLIParser::CLIParser(int argc, char* argv[])
 : desc("Options")
 , valid(false) {
     build();
     try {
         po::store(po::parse_command_line(argc, argv, desc), vm_); // can throw
         // --help option
-        if (vm_.count("help")) {
+        if(vm_.count("help")) {
             std::cout << "DBT-RISE-TGC based virtual platform of TGC cores" << std::endl << desc << std::endl;
         }
         po::notify(vm_); // throws on error, so do after help in case there are any problems
         valid = true;
-        if(backend_opts.find(vm_["backend"].as<std::string>())== std::end(backend_opts))
+        if(backend_opts.find(vm_["backend"].as<std::string>()) == std::end(backend_opts))
             throw po::error("Illegal value for switch backend");
-    } catch (po::error &e) {
+    } catch(po::error& e) {
         std::cerr << "ERROR: " << e.what() << std::endl << std::endl;
         std::cerr << desc << std::endl;
         exit(-1);
     }
     auto log_level = vm_["verbose"].as<scc::log>();
     auto log_level_num = static_cast<unsigned>(log_level);
-    LOGGER(DEFAULT)::reporting_level() = logging::as_log_level(log_level_num > 6 ? 6 : log_level_num);;
+    LOGGER(DEFAULT)::reporting_level() = logging::as_log_level(log_level_num > 6 ? 6 : log_level_num);
+    ;
     LOGGER(DEFAULT)::print_time() = false;
     LOG_OUTPUT(DEFAULT)::ostream() = &std::cout;
-    LOGGER(connection)::reporting_level() = logging::as_log_level(log_level_num > 4 ? log_level_num-1 : log_level_num);;
+    LOGGER(connection)::reporting_level() =
+        logging::as_log_level(log_level_num > 4 ? log_level_num - 1 : log_level_num);
+    ;
     LOGGER(connection)::print_time() = false;
     LOG_OUTPUT(connection)::ostream() = &std::cout;
     ///////////////////////////////////////////////////////////////////////////
@@ -57,7 +59,8 @@ CLIParser::CLIParser(int argc, char *argv[])
                           .logAsync(!vm_["log-sync"].as<bool>()));
     sc_core::sc_report_handler::set_actions("/IEEE_Std_1666/deprecated", sc_core::SC_DO_NOTHING);
     sc_core::sc_report_handler::set_actions(sc_core::SC_ID_MORE_THAN_ONE_SIGNAL_DRIVER_, sc_core::SC_DO_NOTHING);
-    sc_core::sc_report_handler::set_actions(sc_core::SC_ERROR, sc_core::SC_LOG | sc_core::SC_CACHE_REPORT | sc_core::SC_DISPLAY | sc_core::SC_STOP);
+    sc_core::sc_report_handler::set_actions(sc_core::SC_ERROR, sc_core::SC_LOG | sc_core::SC_CACHE_REPORT |
+                                                                   sc_core::SC_DISPLAY | sc_core::SC_STOP);
 }
 
 void CLIParser::build() {

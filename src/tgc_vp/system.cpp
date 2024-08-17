@@ -17,7 +17,7 @@ using namespace sysc::tgfs;
 system::system(sc_core::sc_module_name nm)
 : sc_core::sc_module(nm)
 , NAMED(ahb_router, 3, 2)
-, NAMED(apbBridge, PipelinedMemoryBusToApbBridge_map.size(), 1){
+, NAMED(apbBridge, PipelinedMemoryBusToApbBridge_map.size(), 1) {
     core_complex.ibus(ahb_router.target[0]);
     core_complex.dbus(ahb_router.target[1]);
 
@@ -29,7 +29,7 @@ system::system(sc_core::sc_module_name nm)
     ahb_router.set_target_range(2, 0xF0000000, 256_MB);
 
     size_t i = 0;
-    for (const auto &e : PipelinedMemoryBusToApbBridge_map) {
+    for(const auto& e : PipelinedMemoryBusToApbBridge_map) {
         apbBridge.initiator.at(i)(e.target);
         apbBridge.set_target_range(i, e.start, e.size);
         i++;
@@ -86,9 +86,6 @@ system::system(sc_core::sc_module_name nm)
     SC_METHOD(gen_reset);
     sensitive << erst_n;
 }
-void system::gen_reset(){
-    rst_s = !erst_n.read();
-}
+void system::gen_reset() { rst_s = !erst_n.read(); }
 
-
-} /* namespace sysc */
+} // namespace tgc_vp

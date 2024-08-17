@@ -9,7 +9,8 @@
 namespace tgc_vp {
 
 SC_HAS_PROCESS(tb);
-tb::tb(const sc_core::sc_module_name &nm): sc_core::sc_module(nm) {
+tb::tb(const sc_core::sc_module_name& nm)
+: sc_core::sc_module(nm) {
     top.erst_n(rst_n);
     rst_gen.rst_n(rst_n);
     top.pins_o(pins_o);
@@ -26,4 +27,4 @@ tb::tb(const sc_core::sc_module_name &nm): sc_core::sc_module(nm) {
     top.clk_i(clk_i);
     clk_i = 10_ns;
 }
-}
+} // namespace tgc_vp

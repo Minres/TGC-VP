@@ -25,7 +25,7 @@
     <stringAttribute key="org.eclipse.cdt.launch.DEBUGGER_START_MODE" value="remote"/>
     <booleanAttribute key="org.eclipse.cdt.launch.DEBUGGER_STOP_AT_MAIN" value="true"/>
     <stringAttribute key="org.eclipse.cdt.launch.DEBUGGER_STOP_AT_MAIN_SYMBOL" value="main"/>
-    <stringAttribute key="org.eclipse.cdt.launch.PROGRAM_NAME" value="fw/hello-world/prebuilt/hello.elf"/>
+    <stringAttribute key="org.eclipse.cdt.launch.PROGRAM_NAME" value="build/riscvfw-src/hello-world/hello.elf"/>
     <stringAttribute key="org.eclipse.cdt.launch.PROJECT_ATTR" value="TGC-VP"/>
     <booleanAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_AUTO_ATTR" value="true"/>
     <stringAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_ID_ATTR" value=""/>
@@ -36,7 +36,7 @@
     <stringAttribute key="org.eclipse.debug.core.ATTR_GDBSERVER_PORT" value="2345"/>
     <stringAttribute key="org.eclipse.debug.core.ATTR_PRERUN_CMDS" value=""/>
     <booleanAttribute key="org.eclipse.debug.core.ATTR_SKIP_DOWNLOAD_TO_TARGET" value="false"/>
-    <stringAttribute key="org.eclipse.debug.core.ATTR_TARGET_PATH" value=""/>
+    <stringAttribute key="org.eclipse.debug.core.ATTR_TARGET_PATH" value="/scratch/eyck/workarea/RISC-V/TGC-VP/build/riscvfw-src/hello-world/hello.elf"/>
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
         <listEntry value="/TGC-VP"/>
     </listAttribute>
