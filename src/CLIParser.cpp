@@ -55,8 +55,6 @@ CLIParser::CLIParser(int argc, char *argv[])
                           .logLevel(vm_["verbose"].as<scc::log>())
                           .logFilterRegex(vm_["log-filter"].as<std::string>())
                           .logAsync(!vm_["log-sync"].as<bool>()));
-    scc::stream_redirection cout_redir(std::cout, scc::log::DEBUG);
-    scc::stream_redirection cerr_redir(std::cerr, scc::log::ERROR);
     sc_core::sc_report_handler::set_actions("/IEEE_Std_1666/deprecated", sc_core::SC_DO_NOTHING);
     sc_core::sc_report_handler::set_actions(sc_core::SC_ID_MORE_THAN_ONE_SIGNAL_DRIVER_, sc_core::SC_DO_NOTHING);
     sc_core::sc_report_handler::set_actions(sc_core::SC_ERROR, sc_core::SC_LOG | sc_core::SC_CACHE_REPORT | sc_core::SC_DISPLAY | sc_core::SC_STOP);
