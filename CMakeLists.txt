@@ -71,7 +71,7 @@ set(CONAN_PACKAGE_LIST
 	spdlog/1.9.2
 	boost/1.75.0
 	gsl-lite/0.37.0
-	elfio/3.8
+	elfio/3.11
 	lz4/1.9.3 
 	yaml-cpp/0.7.0 
 	jsoncpp/1.9.5
