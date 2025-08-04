@@ -5,16 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "gdb",
+            "type": "gdbtarget",
             "request": "attach",
             "name": "Attach-to-gdbserver",
-            "executable": "./fw/hello-world/hello",
-            "target": ":10000",
-            "remote": true,
+            "program": "fw/hello-world/prebuilt/hello.elf",
+            "imageAndSymbols": {
+                "symbolFileName": "fw/hello-world/prebuilt/hello.elf"
+            },
+            "target": {
+                "port": "10000"
+            },
             "cwd": "${workspaceRoot}",
-            "valuesFormatting": "prettyPrinters",
-            "gdbpath": "/opt/riscv/bin/riscv32-unknown-elf-gdb",
-            "debugger_args": [],
+            "gdb": "riscv64-unknown-elf-gdb",
             "presentation": {
                 "hidden": true,
                 "group": "FW Debug",
@@ -26,9 +28,8 @@
             "request": "launch",
             "name": "Launch-VP-with-gdbserver",
             "cwd": "${workspaceRoot}",
-            "valuesFormatting": "parseText",
-            "target": "./build/src/tgc-vp",
-            "arguments": "-f fw/hello-world/hello -g 10000",
+            "program": "${workspaceFolder}/build/Debug/src/tgc-vp",
+            "arguments": "-f fw/hello-world/prebuilt/hello.elf -g 10000",
             "presentation": {
                 "hidden": true,
                 "group": "FW Debug",
@@ -40,10 +41,9 @@
             "request": "launch",
             "name": "VP-Debug",
             "cwd": "${workspaceRoot}",
-            "valuesFormatting": "parseText",
-            "target": "./build/src/tgc-vp",
-            "printCalls": false,
-            "arguments": "-f fw/hello-world/hello"
+            "program": "${workspaceFolder}/build/Debug/src/tgc-vp",
+            "arguments": "-f fw/hello-world/prebuilt/hello.elf",
+            "openGdbConsole": true
         },
     ],
     "compounds": [

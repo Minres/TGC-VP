@@ -78,10 +78,7 @@ system::system(sc_core::sc_module_name nm)
     timer0.clear_i(t0_clear_i);
     timer0.tick_i(t0_tick_i);
 
-    qspi.ssclk_o(ssclk_o);
-    qspi.dq_o(dq_o);
-    qspi.dq_i(dq_i);
-    qspi.oe_o(dq_oe_o);
+    qspi.spi_i(mspi0);
 
     SC_METHOD(gen_reset);
     sensitive << erst_n;

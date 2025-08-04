@@ -21,7 +21,6 @@
 #include <boost/program_options.hpp>
 #include <fstream>
 #include <iostream>
-#include <sstream>
 #include <tgc_vp/tb.h>
 #ifdef ERROR
 #undef ERROR
@@ -31,7 +30,6 @@ const std::string core_path{"tb.top.core_complex"};
 
 using namespace sysc;
 using namespace sc_core;
-namespace po = boost::program_options;
 
 namespace {
 const size_t ERRORR_IN_COMMAND_LINE = 1;
@@ -76,10 +74,9 @@ int sc_main(int argc, char* argv[]) {
         auto tx_trace_type =
             static_cast<scc::tracer::file_type>(trace_level >> 1); // bit3-bit1 define the kind of transaction trace
         auto trace_default_on = parser.is_set("trace-default-on");
-        cfg.set_value("$$$scc_tracer$$$.tx_trace_type", static_cast<unsigned>(scc::tracer::file_type::FTR));
-        cfg.set_value("$$$scc_tracer$$$.sig_trace_type", static_cast<unsigned>(scc::tracer::file_type::FST));
-        tracer =
-            scc::make_unique<scc::configurable_tracer>(file_name, tx_trace_type, enable_sig_trace, trace_default_on);
+        cfg.set_value("scc_tracer.tx_trace_type", static_cast<unsigned>(scc::tracer::file_type::FTR));
+        cfg.set_value("scc_tracer.sig_trace_type", static_cast<unsigned>(scc::tracer::file_type::FST));
+        tracer = scc::make_unique<scc::configurable_tracer>(file_name, tx_trace_type, enable_sig_trace);
     }
     ///////////////////////////////////////////////////////////////////////////
     // instantiate top level

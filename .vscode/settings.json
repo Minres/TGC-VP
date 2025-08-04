@@ -2,5 +2,20 @@
     "files.associations": {
         "platform.h": "c"
     },
-    "debug.allowBreakpointsEverywhere": true
+    "debug.allowBreakpointsEverywhere": true,
+    "chat.sendElementsToChat.attachCSS": false,
+    "chat.sendElementsToChat.attachImages": false,
+    "chat.sendElementsToChat.enabled": false,
+    "editor.rulers": [
+        {
+            "column": 140,
+            "comment": "clang-format"
+        }
+    ],
+    "clangd.arguments": [
+        "--pretty",
+        "--background-index",
+        "--compile-commands-dir=${workspaceFolder}/build"
+    ],
+    "cmake.copyCompileCommands": "${workspaceFolder}/build/compile_commands.json"
 }

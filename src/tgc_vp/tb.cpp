@@ -11,6 +11,7 @@ namespace tgc_vp {
 SC_HAS_PROCESS(tb);
 tb::tb(const sc_core::sc_module_name& nm)
 : sc_core::sc_module(nm) {
+    top.clk_i(clk_i);
     top.erst_n(rst_n);
     rst_gen.rst_n(rst_n);
     top.pins_o(pins_o);
@@ -20,11 +21,9 @@ tb::tb(const sc_core::sc_module_name& nm)
     top.uart0_tx_o(uart0_tx_o);
     top.t0_clear_i(t0_clear_i);
     top.t0_tick_i(t0_tick_i);
-    top.ssclk_o(ssclk_o);
-    top.dq_o(dq_o);
-    top.dq_i(dq_i);
-    top.dq_oe_o(dq_oe_o);
-    top.clk_i(clk_i);
+    top.mspi0(spi());
+    spi(0)(qspi_mem.spi_t);
+
     clk_i = 10_ns;
 }
 } // namespace tgc_vp
